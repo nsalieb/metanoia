@@ -1,0 +1,2368 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>ميتانويا (Metanoia) | رحلة تغيير الفكر والقلب</title>
+  <!-- خطوط عربية عصرية وكلاسيكية للنصوص والآيات -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Cairo', 'sans-serif'],
+            serif: ['Amiri', 'serif'],
+          },
+          colors: {
+            canvas: '#FAF8F5',
+            sand: '#F3EFEA',
+            indigoDeep: '#1E1B4B',
+            indigoMid: '#312E81',
+            amberGlow: '#F59E0B',
+            amberSoft: '#FEF3C7',
+            coralPop: '#F97316',
+            coralSoft: '#FFEDD5',
+            mintTeal: '#14B8A6',
+            mintSoft: '#CCFBF1',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --reader-scale: 1;
+    }
+
+    body {
+      background: linear-gradient(135deg, #E2E8F0 0%, #EDE9FE 50%, #FEF3C7 100%);
+      color: #1E293B;
+      font-family: 'Cairo', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* تحجيم الخط الديناميكي */
+    .r-text {
+      font-size: calc(0.9rem * var(--reader-scale));
+      line-height: 1.95;
+      transition: font-size 0.2s ease;
+    }
+    .r-scripture {
+      font-size: calc(1.08rem * var(--reader-scale));
+      line-height: 2.1;
+      transition: font-size 0.2s ease;
+    }
+    .r-heading {
+      font-size: calc(1.1rem * var(--reader-scale));
+      transition: font-size 0.2s ease;
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    @keyframes slideUpFade {
+      from { opacity: 0; transform: translateY(12px) scale(0.985); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .animate-card {
+      animation: slideUpFade 0.32s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes waveBar {
+      0%, 100% { height: 8px; }
+      50% { height: 28px; }
+    }
+    .wave-active span {
+      animation: waveBar 0.9s infinite ease-in-out;
+    }
+    .wave-active span:nth-child(2) { animation-delay: 0.15s; }
+    .wave-active span:nth-child(3) { animation-delay: 0.3s; }
+    .wave-active span:nth-child(4) { animation-delay: 0.45s; }
+    .wave-active span:nth-child(5) { animation-delay: 0.6s; }
+    .wave-active span:nth-child(6) { animation-delay: 0.25s; }
+    .wave-active span:nth-child(7) { animation-delay: 0.5s; }
+
+    input[type="range"] {
+      accent-color: #F59E0B;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex items-center justify-center sm:py-3">
+
+  <!-- إطار التطبيق الرئيسي -->
+  <div id="app-shell" class="w-full sm:w-[440px] h-screen sm:h-[880px] bg-canvas sm:rounded-[2.6rem] sm:border-[8px] sm:border-indigoDeep shadow-2xl flex flex-col overflow-hidden relative">
+
+    <!-- إشعار Toast عائم -->
+    <div id="toast" class="fixed top-6 left-1/2 -translate-x-1/2 z-50 pointer-events-none opacity-0 transition-all duration-300 -translate-y-2">
+      <div class="bg-indigoDeep text-white text-xs font-bold px-4 py-2.5 rounded-full shadow-xl border border-amberGlow/50 flex items-center gap-2">
+        <span id="toast-msg">✨ تم الحفظ</span>
+      </div>
+    </div>
+
+    <!-- شريط تثبيت التطبيق الذكي (PWA Add to Home Screen Banner) -->
+    <div id="pwa-banner" class="bg-gradient-to-l from-indigoDeep via-indigoMid to-indigo-900 text-white px-4 py-2 flex items-center justify-between gap-2 text-[11px] z-20">
+      <div class="flex items-center gap-2 min-w-0">
+        <span class="text-base shrink-0">📲</span>
+        <p class="truncate">ثبّت <b>ميتانويا</b> على شاشتك الرئيسية لتجربة أسرع!</p>
+      </div>
+      <div class="flex items-center gap-1.5 shrink-0">
+        <button onclick="showPwaInstructions()" class="px-2.5 py-1 rounded-lg bg-amberGlow text-indigoDeep font-extrabold text-[10px]">الطريقة</button>
+        <button onclick="dismissPwaBanner()" class="text-slate-300 hover:text-white px-1 font-bold">✕</button>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- الهيدر العلوي + الشعار المبتكر + الاستريك  -->
+    <!-- ========================================== -->
+    <header class="px-5 pt-3.5 pb-3 glass-card border-b border-stone-200/80 flex items-center justify-between z-20">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <!-- شعار ميتانويا المخصص (SVG: كتاب مفتوح ينبثق منه فجر وبذرة تجديد) -->
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-indigoDeep via-indigoMid to-purple-900 p-1.5 flex items-center justify-center shadow-md shrink-0 relative overflow-hidden">
+          <svg viewBox="0 0 48 48" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="sunGrad" x1="24" y1="6" x2="24" y2="28" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#FDE047"/>
+                <stop offset="0.55" stop-color="#F59E0B"/>
+                <stop offset="1" stop-color="#F97316"/>
+              </linearGradient>
+              <linearGradient id="leafGrad" x1="16" y1="14" x2="32" y2="30" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#5EEAD4"/>
+                <stop offset="1" stop-color="#14B8A6"/>
+              </linearGradient>
+            </defs>
+            <!-- هالة الفجر -->
+            <circle cx="24" cy="22" r="11" fill="url(#sunGrad)" opacity="0.95"/>
+            <!-- منحنى الصعود والتجدد (Metanoia Arc) -->
+            <path d="M11 25C13 14 21 9 33 11" stroke="#FDE047" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="2 3"/>
+            <!-- برعم الحياة والتجديد -->
+            <path d="M24 29V16M24 22C24 18 29 16 32 18C31 22 27 23 24 22ZM24 25C24 21 19 19 16 21C17 25 21 26 24 25Z" stroke="url(#leafGrad)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- صفحات الكتاب المفتوح -->
+            <path d="M8 33C13 30 19 31 24 35C29 31 35 30 40 33V38C35 35 29 36 24 40C19 36 13 35 8 38V33Z" fill="#FFFFFF" fill-opacity="0.95"/>
+          </svg>
+        </div>
+        <div class="min-w-0">
+          <div class="flex items-center gap-1.5">
+            <h1 id="header-app-name" class="font-black text-lg text-indigoDeep leading-none truncate">ميتانويا</h1>
+            <span class="text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-amberSoft text-amber-800 border border-amberGlow/40">Metanoia</span>
+          </div>
+          <p id="header-app-slogan" class="text-[11px] text-slate-500 mt-0.5 font-semibold truncate">رحلة تغيير الفكر والقلب</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2 shrink-0">
+        <!-- عداد الاستريك + درع الحماية -->
+        <button onclick="showStreakToast()" title="سلسلة أيامك المتتالية مع درع حماية أسبوعي" class="flex items-center gap-1 bg-white border border-amber-200 px-2.5 py-1.5 rounded-2xl shadow-sm hover:bg-amberSoft/50 transition active:scale-95">
+          <span class="text-sm">🔥</span>
+          <span id="hdr-streak" class="text-xs font-black text-indigoDeep">6</span>
+          <span class="text-[11px]">🛡️</span>
+        </button>
+
+        <!-- جرس التنبيهات الداعمة -->
+        <button onclick="toggleNudges()" class="relative w-9 h-9 rounded-2xl bg-white border border-stone-200 text-indigoDeep flex items-center justify-center shadow-sm hover:bg-sand transition active:scale-95">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          </svg>
+          <span id="nudge-dot" class="w-2.5 h-2.5 rounded-full bg-coralPop border-2 border-white absolute top-1.5 right-1.5"></span>
+        </button>
+      </div>
+    </header>
+
+    <!-- درج التنبيهات الذكية -->
+    <div id="nudges-drawer" class="hidden absolute inset-x-4 top-28 z-40 bg-white rounded-3xl shadow-2xl border border-stone-200 p-4 animate-card">
+      <div class="flex items-center justify-between pb-2.5 border-b border-stone-100">
+        <span class="font-extrabold text-sm text-indigoDeep">💌 رسائل دعم وتشجيع ليومك</span>
+        <button onclick="toggleNudges()" class="text-xs font-bold text-slate-500 px-2.5 py-1 rounded-xl bg-sand">إغلاق</button>
+      </div>
+      <div id="nudges-list" class="mt-3 space-y-2.5 max-h-64 overflow-y-auto no-scrollbar"></div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 1. تبويب الرئيسية (Home)                   -->
+    <!-- ========================================== -->
+    <main id="tab-home" class="flex-1 flex flex-col overflow-y-auto no-scrollbar px-5 py-4 space-y-5">
+
+      <!-- رسالة ترحيب يومية ذكية -->
+      <div class="bg-gradient-to-l from-amberSoft/90 via-orange-50 to-mintSoft/50 border border-amberGlow/30 rounded-2xl p-3.5 flex items-center justify-between gap-3">
+        <div class="min-w-0">
+          <span class="text-[10px] font-extrabold text-coralPop">☀️ جرعة نور النهاردة</span>
+          <p id="home-daily-nudge" class="text-xs font-bold text-indigoDeep leading-relaxed mt-0.5">«روح الله بيرف بحنية فوق كركبتك.. سمّي مخاوفك باسمها وابدأ بهدوء.»</p>
+        </div>
+        <button onclick="switchTab('profile')" class="w-10 h-10 rounded-2xl bg-indigoDeep text-amberGlow font-black text-sm flex items-center justify-center shrink-0 shadow">
+          <span id="home-user-initial">ن</span>
+        </button>
+      </div>
+
+      <!-- بطاقة المتابعة السريعة / العدد المميز -->
+      <div class="bg-gradient-to-br from-indigoDeep via-indigoMid to-purple-950 rounded-3xl p-5 text-white shadow-xl relative overflow-hidden">
+        <div class="absolute -left-10 -top-10 w-36 h-36 rounded-full bg-coralPop/20 blur-2xl"></div>
+        <div class="absolute -right-8 -bottom-8 w-32 h-32 rounded-full bg-mintTeal/20 blur-xl"></div>
+
+        <div class="flex items-center justify-between mb-2 relative z-10">
+          <span class="px-2.5 py-1 rounded-full bg-white/15 text-amberGlow text-[11px] font-extrabold">🔥 الأكثر قراءة الآن</span>
+          <span class="text-[11px] text-indigo-200 font-semibold">📖 اقرأ • 🎧 بودكاست • 🎬 فيديو</span>
+        </div>
+        <h2 class="font-black text-lg leading-snug mb-1 relative z-10">بَرَاشِيت: لما الواحد يتكلم.. والآلهة المزيفة تسكت</h2>
+        <p class="text-xs text-indigo-200 leading-relaxed mb-4 relative z-10">إزاي الفوضى بتترتب وتتحول لكون؟ (سفر التكوين 1: 1 - 5)</p>
+        <div class="flex gap-2 relative z-10">
+          <button onclick="openBooklet('bereshit-1', 'read')" class="flex-1 py-3 px-4 rounded-2xl bg-gradient-to-l from-amberGlow to-coralPop hover:opacity-95 text-indigoDeep font-black text-xs flex items-center justify-center gap-1.5 shadow-lg transition active:scale-98">
+            <span>🚀 ابدأ الرحلة الآن</span>
+          </button>
+          <button onclick="openBooklet('bereshit-1', 'podcast')" title="استمع كـ بودكاست" class="px-3.5 py-3 rounded-2xl bg-white/15 hover:bg-white/25 text-white font-extrabold text-xs transition">
+            🎧
+          </button>
+        </div>
+      </div>
+
+      <!-- تحدي المجتمع الأسبوعي (7-Day Micro-Challenge) -->
+      <div class="bg-white rounded-3xl p-4 border border-stone-200/80 shadow-sm flex items-center justify-between gap-3">
+        <div class="space-y-1">
+          <div class="flex items-center gap-1.5">
+            <span class="px-2 py-0.5 rounded-full bg-mintSoft text-teal-800 text-[10px] font-extrabold">تحدي الأسبوع</span>
+            <span class="text-[10px] text-slate-500 font-bold">👥 184 شاب وبنت مشاركين</span>
+          </div>
+          <h3 class="font-extrabold text-xs text-indigoDeep">أسبوع «تسمية الفوضى» بلا انفعال</h3>
+          <p class="text-[11px] text-slate-500">اكتب قلقك في ورقة + قول كلمة تشجيع في بيتك</p>
+        </div>
+        <button id="challenge-join-btn" onclick="joinWeeklyChallenge()" class="px-3.5 py-2.5 rounded-2xl bg-indigoDeep text-amberGlow text-xs font-extrabold shrink-0 shadow-sm transition active:scale-95">
+          أنا معاك 💪
+        </button>
+      </div>
+
+      <!-- السلاسل الرئيسية الـ 3 -->
+      <div class="space-y-4 pb-4">
+        <div class="flex items-center justify-between">
+          <h3 class="font-black text-sm text-indigoDeep">السلاسل والكتيّبات المتاحة (8 كتيّبات)</h3>
+          <button onclick="simulateNextDay()" class="text-[11px] font-extrabold text-coralPop bg-coralSoft/70 px-2.5 py-1 rounded-xl hover:bg-coralSoft transition">
+            محاكاة يوم جديد ⏩
+          </button>
+        </div>
+        <div id="home-series-list" class="space-y-4"></div>
+      </div>
+    </main>
+
+    <!-- ========================================== -->
+    <!-- 2. تبويب المكتبة والأرشيف (Library)        -->
+    <!-- ========================================== -->
+    <section id="tab-library" class="hidden flex-1 flex-col overflow-y-auto no-scrollbar px-5 py-4 space-y-4">
+      <div>
+        <h2 class="font-black text-lg text-indigoDeep">مكتبة ميتانويا الشاملة</h2>
+        <p class="text-xs text-slate-500">تصفّح حسب القسم أو ابحث عن أي موضوع يهمك</p>
+      </div>
+
+      <!-- شريط البحث -->
+      <div class="relative">
+        <input type="text" id="lib-search" oninput="renderLibrary()" placeholder="ابحث (مثلاً: ديماس، ستارة، الفوضى، الطيار الآلي)..." class="w-full bg-white border border-stone-200 rounded-2xl py-2.5 pr-10 pl-4 text-xs focus:outline-none focus:border-amberGlow transition" />
+        <svg class="w-4 h-4 text-slate-400 absolute right-3.5 top-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+      </div>
+
+      <!-- فلاتر الأقسام -->
+      <div id="lib-cat-pills" class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1"></div>
+
+      <!-- نتائج المكتبة -->
+      <div id="lib-booklets-list" class="space-y-3 pb-4"></div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 3. تبويب أقلام ميتانويا (Community)        -->
+    <!-- ========================================== -->
+    <section id="tab-community" class="hidden flex-1 flex-col overflow-y-auto no-scrollbar px-5 py-4 space-y-4">
+      <div class="flex items-center justify-between gap-2">
+        <div>
+          <h2 class="font-black text-lg text-indigoDeep">أقلام ميتانويا ✍️</h2>
+          <p class="text-xs text-slate-500">مساحة حرة لتأملات وتجارب الشباب</p>
+        </div>
+        <button onclick="toggleWriteModal()" class="px-3.5 py-2.5 rounded-2xl bg-gradient-to-l from-mintTeal to-teal-600 text-white text-xs font-extrabold shadow-md hover:opacity-95 transition active:scale-95">
+          + اكتب تأملك
+        </button>
+      </div>
+
+      <!-- قالب كتابة مقال حر -->
+      <form id="write-article-form" onsubmit="submitArticle(event)" class="hidden bg-white rounded-3xl p-4 border-2 border-mintTeal/40 shadow-lg space-y-3 animate-card">
+        <div class="flex items-center justify-between">
+          <h3 class="font-extrabold text-sm text-teal-800">قالب مشاركة مقال حر</h3>
+          <button type="button" onclick="toggleWriteModal()" class="text-xs font-bold text-slate-400">إغلاق</button>
+        </div>
+        <input type="text" id="w-author" placeholder="اسمك (أو اسمك المستعار)" required class="w-full bg-canvas border border-stone-200 rounded-xl px-3 py-2 text-xs" />
+        <input type="text" id="w-title" placeholder="عنوان المقال أو الفكرة" required class="w-full bg-canvas border border-stone-200 rounded-xl px-3 py-2 text-xs" />
+        <input type="text" id="w-verse" placeholder="آية أو اقتباس ملهم (اختياري)" class="w-full bg-canvas border border-stone-200 rounded-xl px-3 py-2 text-xs" />
+        <textarea id="w-body" rows="4" placeholder="اكتب تجربتك أو تأملك بأسلوبك القريب (هيظهر بعد مراجعة المشرف)..." required class="w-full bg-canvas border border-stone-200 rounded-xl px-3 py-2 text-xs leading-relaxed"></textarea>
+        <button type="submit" class="w-full py-2.5 rounded-xl bg-indigoDeep text-amberGlow font-extrabold text-xs">إرسال للمراجعة والنشر ✨</button>
+      </form>
+
+      <!-- قائمة المقالات المنشورة -->
+      <div id="community-posts-list" class="space-y-3 pb-4"></div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 4. تبويب حسابي + اسأل الكوتش (Profile)     -->
+    <!-- ========================================== -->
+    <section id="tab-profile" class="hidden flex-1 flex-col overflow-y-auto no-scrollbar px-5 py-4 space-y-4">
+
+      <!-- بطاقة البروفايل الشخصية -->
+      <div class="bg-white rounded-3xl p-5 border border-stone-200/80 shadow-sm space-y-3">
+        <div class="flex items-center gap-3.5">
+          <div id="prof-avatar" class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigoDeep via-indigoMid to-coralPop text-white font-black text-xl flex items-center justify-center shadow-md shrink-0">
+            ن
+          </div>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2">
+              <h2 id="prof-name" class="font-black text-base text-indigoDeep truncate">نصر صليب</h2>
+              <button onclick="toggleEditProfile()" class="text-[11px] font-extrabold text-coralPop hover:underline shrink-0">✏️ تعديل</button>
+            </div>
+            <p id="prof-bio" class="text-xs text-slate-500 truncate mt-0.5">في رحلة يومية لتجديد الفكر والقلب ✨</p>
+            <div class="flex items-center gap-3 mt-2 text-[11px] font-extrabold">
+              <span class="text-amber-700">🔥 <span id="prof-streak-val">6</span> أيام</span>
+              <span class="text-teal-700">📖 <span id="prof-done-val">2</span> كتيّب مكتمل</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="prof-edit-box" class="hidden pt-3 border-t border-stone-100 space-y-2.5 animate-card">
+          <input type="text" id="inp-prof-name" placeholder="اسمك..." class="w-full bg-canvas border border-stone-200 rounded-xl px-3 py-2 text-xs font-bold" />
+          <input type="text" id="inp-prof-bio" placeholder="هدفك أو رسالتك..." class="w-full bg-canvas border border-stone-200 rounded-xl px-3 py-2 text-xs" />
+          <button onclick="saveProfile()" class="w-full py-2 rounded-xl bg-indigoDeep text-white text-xs font-extrabold">حفظ التعديلات</button>
+        </div>
+      </div>
+
+      <!-- بوصلة النمو الشخصي (الروحي - الفكري - النفسي) -->
+      <div class="bg-white rounded-3xl p-5 border border-stone-200/80 shadow-sm space-y-3.5">
+        <div class="flex items-center justify-between">
+          <h3 class="font-black text-sm text-indigoDeep">🧭 بوصلة نموك الشخصي</h3>
+          <span class="px-2.5 py-0.5 rounded-full bg-mintSoft text-teal-800 text-[10px] font-extrabold">تتحدث مع تقييماتك</span>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <div class="flex justify-between text-xs font-bold mb-1">
+              <span class="text-indigoDeep">🕊️ البعد الروحي (الحوار الحي مع الله)</span>
+              <span id="g-sp-txt" class="text-amber-600">84%</span>
+            </div>
+            <div class="w-full h-2.5 bg-sand rounded-full overflow-hidden">
+              <div id="g-sp-bar" class="h-full bg-gradient-to-l from-amberGlow to-coralPop rounded-full transition-all duration-500" style="width: 84%"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs font-bold mb-1">
+              <span class="text-indigoDeep">🧠 البعد الفكري (تجديد الذهن والوعي)</span>
+              <span id="g-in-txt" class="text-indigoMid">80%</span>
+            </div>
+            <div class="w-full h-2.5 bg-sand rounded-full overflow-hidden">
+              <div id="g-in-bar" class="h-full bg-indigoMid rounded-full transition-all duration-500" style="width: 80%"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between text-xs font-bold mb-1">
+              <span class="text-indigoDeep">💚 البعد النفسي (السلام والحدود الصحية)</span>
+              <span id="g-ps-txt" class="text-mintTeal">76%</span>
+            </div>
+            <div class="w-full h-2.5 bg-sand rounded-full overflow-hidden">
+              <div id="g-ps-bar" class="h-full bg-mintTeal rounded-full transition-all duration-500" style="width: 76%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ميزة: رسالة خاصة للمرشد / اسأل الكوتش (بسرية تامة) -->
+      <div class="bg-gradient-to-br from-indigoDeep to-indigoMid rounded-3xl p-4 text-white shadow-md space-y-2.5">
+        <div class="flex items-center justify-between">
+          <h3 class="font-extrabold text-sm text-amberGlow">💬 اسأل الكوتش (رسالة خاصة للمرشد)</h3>
+          <span class="px-2 py-0.5 rounded-full bg-white/10 text-[10px]">سرية تامة 🔒</span>
+        </div>
+        <p class="text-[11px] text-indigo-200 leading-relaxed">لو عندك سؤال روحي أو نفسي مش حابب تنشره للعامة، ابعته هنا وهيظهر للمرشد فقط في لوحة التحكم للرد عليك:</p>
+        <form onsubmit="sendPrivateGuidance(event)" class="space-y-2">
+          <textarea id="private-msg-input" rows="2" placeholder="اكتب سؤالك أو طلب صلاة خاص هنا..." required class="w-full bg-white/10 border border-white/20 rounded-xl p-2.5 text-xs text-white placeholder-indigo-200 focus:outline-none"></textarea>
+          <button type="submit" class="w-full py-2 rounded-xl bg-amberGlow text-indigoDeep font-extrabold text-xs">إرسال رسالة خاصة 📩</button>
+        </form>
+        <div id="user-private-replies" class="space-y-1.5 pt-1"></div>
+      </div>
+
+      <!-- كبسولة الزمن -->
+      <div class="bg-amberSoft/70 rounded-3xl p-4 border border-amberGlow/30 space-y-2.5">
+        <div class="flex items-center justify-between">
+          <h3 class="font-extrabold text-sm text-indigoDeep">⏳ كبسولة الزمن الخاصة بك</h3>
+          <span class="text-[10px] font-bold text-amber-800">تُفتح بعد 30 يوم</span>
+        </div>
+        <div class="flex gap-2">
+          <input type="text" id="capsule-inp" placeholder="رسالة أو وعد لنفسك بعد شهر..." class="flex-1 bg-white border border-amber-200 rounded-xl px-3 py-2 text-xs focus:outline-none" />
+          <button onclick="saveCapsule()" class="px-3.5 py-2 rounded-xl bg-indigoDeep text-white text-xs font-bold shrink-0">حفظ</button>
+        </div>
+        <div id="capsules-list" class="space-y-1.5"></div>
+      </div>
+
+      <!-- بطاقات الاقتباس المحفوظة -->
+      <div class="space-y-2 pb-4">
+        <h3 class="font-extrabold text-sm text-indigoDeep">🔖 بطاقات الاقتباس المحفوظة</h3>
+        <div id="saved-quotes-box" class="space-y-2"></div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 5. تبويب الإدارة والربط السحابي (Admin)     -->
+    <!-- ========================================== -->
+    <section id="tab-admin" class="hidden flex-1 flex-col overflow-y-auto no-scrollbar px-5 py-4 space-y-4">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="font-black text-lg text-indigoDeep">⚙️ لوحة الإدارة والتحكم</h2>
+          <p class="text-xs text-slate-500">إدارة المحتوى، الرسائل الخاصة، والربط السحابي</p>
+        </div>
+        <span id="cloud-status-badge" class="px-2.5 py-1 rounded-full bg-amberSoft text-amber-800 text-[10px] font-extrabold">تخزين محلي</span>
+      </div>
+
+      <!-- أزرار التبويب الفرعية داخل الإدارة -->
+      <div class="grid grid-cols-3 gap-1.5 bg-sand p-1 rounded-2xl text-xs font-extrabold">
+        <button onclick="switchAdminSub('moderation')" id="adm-sub-btn-moderation" class="py-2 rounded-xl bg-indigoDeep text-white transition">المتابعة والرسائل</button>
+        <button onclick="switchAdminSub('content')" id="adm-sub-btn-content" class="py-2 rounded-xl text-indigoDeep transition">إضافة محتوى</button>
+        <button onclick="switchAdminSub('firebase')" id="adm-sub-btn-firebase" class="py-2 rounded-xl text-indigoDeep transition">ربط Firebase</button>
+      </div>
+
+      <!-- 1. المتابعة والرسائل الخاصة والمقالات المعلقة -->
+      <div id="adm-sub-moderation" class="space-y-4 pb-4">
+        <!-- رسائل اسأل الكوتش الخاصة -->
+        <div class="bg-white rounded-3xl p-4 border border-stone-200 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h3 class="font-extrabold text-xs text-indigoDeep">💬 رسائل «اسأل الكوتش» الخاصة</h3>
+            <span id="adm-priv-count" class="px-2 py-0.5 rounded-full bg-coralSoft text-coralPop text-[10px] font-bold">1</span>
+          </div>
+          <div id="adm-priv-list" class="space-y-2.5"></div>
+        </div>
+
+        <!-- مقالات أقلام ميتانويا المعلقة -->
+        <div class="bg-white rounded-3xl p-4 border border-stone-200 space-y-2.5">
+          <div class="flex items-center justify-between">
+            <h3 class="font-extrabold text-xs text-indigoDeep">✍️ مقالات تنتظر الاعتماد للنشر</h3>
+            <span id="adm-pend-count" class="px-2 py-0.5 rounded-full bg-amberSoft text-amber-800 text-[10px] font-bold">1</span>
+          </div>
+          <div id="adm-pend-list" class="space-y-2.5"></div>
+        </div>
+
+        <!-- تقييمات القراء -->
+        <div class="bg-white rounded-3xl p-4 border border-stone-200 space-y-2">
+          <h3 class="font-extrabold text-xs text-indigoDeep">🧭 سجل تقييمات بوصلة النمو للقراء</h3>
+          <div id="adm-growth-logs" class="space-y-2 max-h-44 overflow-y-auto no-scrollbar"></div>
+        </div>
+      </div>
+
+      <!-- 2. إضافة كتيب جديد أو ربط يوتيوب وبودكاست + تعديل الهوية -->
+      <div id="adm-sub-content" class="hidden space-y-4 pb-4">
+        <!-- تخصيص اسم التطبيق والشعار -->
+        <div class="bg-white rounded-3xl p-4 border border-stone-200 space-y-2.5">
+          <h3 class="font-extrabold text-xs text-indigoDeep">🎨 تخصيص اسم التطبيق والشعار</h3>
+          <div class="flex gap-2">
+            <input type="text" id="cfg-app-name" value="ميتانويا" class="flex-1 bg-canvas border border-stone-200 rounded-xl px-3 py-2 text-xs font-bold" />
+            <input type="text" id="cfg-app-slogan" value="رحلة تغيير الفكر والقلب" class="flex-1 bg-canvas border border-stone-200 rounded-xl px-3 py-2 text-xs" />
+          </div>
+          <button onclick="updateBrandIdentity()" class="w-full py-2 rounded-xl bg-indigoDeep text-amberGlow text-xs font-extrabold">تحديث الهوية فوراً</button>
+        </div>
+
+        <!-- ربط يوتيوب وبودكاست لأي كتيب حالي -->
+        <div class="bg-white rounded-3xl p-4 border border-stone-200 space-y-2.5">
+          <h3 class="font-extrabold text-xs text-indigoDeep">🎬🎧 ربط فيديو يوتيوب أو بودكاست لكتيّب</h3>
+          <select id="media-booklet-select" class="w-full bg-canvas border border-stone-200 rounded-xl px-3 py-2 text-xs font-bold"></select>
+          <input type="url" id="media-youtube-url" placeholder="رابط فيديو يوتيوب (https://youtu.be/...)" class="w-full bg-canvas border border-stone-200 rounded-xl px-3 py-2 text-xs" />
+          <input type="url" id="media-podcast-url" placeholder="رابط ملف البودكاست MP3 (اختياري)" class="w-full bg-canvas border border-stone-200 rounded-xl px-3 py-2 text-xs" />
+          <button onclick="attachMediaToBooklet()" class="w-full py-2 rounded-xl bg-mintTeal text-white text-xs font-extrabold">حفظ الروابط للكتيّب</button>
+        </div>
+
+        <!-- نشر كتيب جديد -->
+        <form onsubmit="publishNewBooklet(event)" class="bg-white rounded-3xl p-4 border border-stone-200 space-y-2.5">
+          <h3 class="font-extrabold text-xs text-indigoDeep">📖 نشر كتيّب جديد وإرسال تنبيه</h3>
+          <select id="new-bk-series" class="w-full bg-canvas border border-stone-200 rounded-xl px-3 py-2 text-xs font-bold">
+            <option value="bereshit">سلسلة: بَرَاشِيت ثورة العهد (يومي تتابعي)</option>
+            <option value="paul">سلسلة: رسائل بولس الشخصية (مفتوح)</option>
+            <option value="online">سلسلة: أونلاين مع السماء (مفتوح)</option>
+          </select>
+          <input type="text" id="new-bk-title" placeholder="عنوان الكتيّب الجديد" required class="w-full bg-canvas border border-stone-200 rounded-xl px-3 py-2 text-xs" />
+          <input type="text" id="new-bk-sub" placeholder="الشاهد أو العنوان الفرعي" required class="w-full bg-canvas border border-stone-200 rounded-xl px-3 py-2 text-xs" />
+          <textarea id="new-bk-body" rows="3" placeholder="اكتب النص (افصل الصفحات بـ --- بين كل صفحة وأخرى)..." required class="w-full bg-canvas border border-stone-200 rounded-xl px-3 py-2 text-xs"></textarea>
+          <button type="submit" class="w-full py-2.5 rounded-xl bg-amberGlow text-indigoDeep font-extrabold text-xs">نشر وإرسال تنبيه 🔔</button>
+        </form>
+      </div>
+
+      <!-- 3. إعدادات الربط السحابي (Firebase Cloud Sync) -->
+      <div id="adm-sub-firebase" class="hidden space-y-3 pb-4">
+        <div class="bg-white rounded-3xl p-4 border border-stone-200 space-y-2.5">
+          <h3 class="font-extrabold text-sm text-indigoDeep">☁️ تفعيل السحابة (Firebase Config)</h3>
+          <p class="text-[11px] text-slate-600 leading-relaxed">
+            لتحويل التطبيق للعمل أونلاين وحفظ حسابات القراء وإجاباتهم ورسائلهم سحابياً مجاناً:
+            <br>1. افتح <b>console.firebase.google.com</b> وأنشئ مشروعاً مجانياً.
+            <br>2. فعّل <b>Firestore Database</b> وانسخ كائن <code>firebaseConfig</code> الصقه هنا:
+          </p>
+          <textarea id="firebase-config-json" rows="5" placeholder='{"apiKey": "...", "authDomain": "...", "projectId": "..."}' class="w-full bg-slate-900 text-emerald-300 font-mono text-[11px] rounded-2xl p-3 focus:outline-none" dir="ltr"></textarea>
+          <button onclick="saveFirebaseConfig()" class="w-full py-2.5 rounded-xl bg-indigoDeep text-amberGlow font-extrabold text-xs">حفظ وتفعيل الربط السحابي 🚀</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- 6. واجهة الكتيب التفاعلية (3 أوضاع تجربة)  -->
+    <!-- ========================================== -->
+    <section id="view-booklet" class="hidden absolute inset-0 z-30 bg-canvas flex-col overflow-hidden">
+      <!-- الشريط العلوي للكتيب -->
+      <div class="px-4 pt-3.5 pb-2 glass-card border-b border-stone-200/80 flex items-center justify-between gap-2">
+        <button onclick="closeBooklet()" class="px-3 py-1.5 rounded-xl bg-sand hover:bg-stone-200 text-indigoDeep text-xs font-extrabold flex items-center gap-1 transition">
+          <span>→</span>
+          <span>رجوع</span>
+        </button>
+        <div class="text-center flex-1 min-w-0">
+          <p id="bk-view-series" class="text-[10px] font-extrabold text-coralPop truncate">بَرَاشِيت: ثورة العهد</p>
+          <h2 id="bk-view-title" class="text-xs font-black text-indigoDeep truncate">عنوان الكتيب</h2>
+        </div>
+        <button onclick="giftBookletToFriend()" class="px-2.5 py-1.5 rounded-xl bg-amberSoft text-amber-900 text-[11px] font-extrabold flex items-center gap-1 shrink-0">
+          <span>🎁</span>
+          <span>أهدِ</span>
+        </button>
+      </div>
+
+      <!-- مبدّل أوضاع التجربة الثلاثة (اقرأ / بودكاست / فيديو) -->
+      <div class="px-4 py-2 bg-white border-b border-stone-200/80 flex items-center justify-between gap-2">
+        <div class="flex-1 grid grid-cols-3 gap-1 bg-sand p-1 rounded-2xl text-[11px] font-extrabold">
+          <button onclick="switchExperienceMode('read')" id="mode-btn-read" class="py-1.5 rounded-xl bg-indigoDeep text-white shadow-sm transition">
+            📖 اقرأ
+          </button>
+          <button onclick="switchExperienceMode('podcast')" id="mode-btn-podcast" class="py-1.5 rounded-xl text-indigoDeep transition">
+            🎧 بودكاست
+          </button>
+          <button onclick="switchExperienceMode('video')" id="mode-btn-video" class="py-1.5 rounded-xl text-indigoDeep transition">
+            🎬 فيديو
+          </button>
+        </div>
+
+        <!-- أدوات القارئ السريعة (موسيقى هادئة + تكبير الخط) -->
+        <div class="flex items-center gap-1 shrink-0">
+          <button id="music-toggle-btn" onclick="toggleAmbientMusic()" title="موسيقى هادئة مصاحبة" class="w-8 h-8 rounded-xl bg-sand text-slate-700 text-xs font-bold flex items-center justify-center border border-stone-200">
+            🔇
+          </button>
+          <button onclick="adjustFontScale(-0.1)" class="w-7 h-8 rounded-xl bg-sand text-indigoDeep font-black text-[11px] flex items-center justify-center">A-</button>
+          <button onclick="adjustFontScale(0.1)" class="w-7 h-8 rounded-xl bg-sand text-indigoDeep font-black text-[11px] flex items-center justify-center">A+</button>
+        </div>
+      </div>
+
+      <!-- الوضع 1: القراءة التفاعلية (Read Mode) -->
+      <div id="exp-read-box" class="flex-1 flex flex-col overflow-hidden">
+        <!-- شريط تقدم الصفحات + زر استمع للصفحة -->
+        <div class="px-5 pt-2.5 pb-1 flex items-center justify-between gap-2">
+          <div id="bk-progress-bar" class="flex-1 flex items-center gap-1"></div>
+          <button id="tts-read-btn" onclick="toggleArabicTTS()" class="px-2.5 py-1 rounded-lg bg-mintSoft text-teal-900 text-[10px] font-extrabold flex items-center gap-1 shrink-0">
+            <span id="tts-ico">🔊</span>
+            <span id="tts-txt">استمع</span>
+          </button>
+          <span id="bk-page-counter" class="text-[11px] font-extrabold text-slate-500 shrink-0">1 / 8</span>
+        </div>
+
+        <!-- مسرح الصفحة -->
+        <div id="bk-page-stage" class="flex-1 overflow-y-auto no-scrollbar px-5 py-3"></div>
+
+        <!-- أزرار التنقل بين الصفحات -->
+        <div class="px-5 py-3 bg-white border-t border-stone-200/80 flex items-center justify-between gap-3">
+          <button id="bk-prev-btn" onclick="prevPage()" class="flex-1 py-2.5 px-4 rounded-2xl bg-sand hover:bg-stone-200 text-indigoDeep font-extrabold text-xs transition disabled:opacity-40">
+            → السابق
+          </button>
+          <button id="bk-next-btn" onclick="nextPage()" class="flex-[1.6] py-2.5 px-4 rounded-2xl bg-indigoDeep hover:bg-indigoMid text-white font-extrabold text-xs shadow-md transition">
+            الصفحة التالية ←
+          </button>
+        </div>
+      </div>
+
+      <!-- الوضع 2: مشغل البودكاست (Podcast Mode) -->
+      <div id="exp-podcast-box" class="hidden flex-1 flex-col items-center justify-center px-6 py-6 text-center space-y-5 overflow-y-auto">
+        <div class="w-36 h-36 rounded-[2rem] bg-gradient-to-br from-indigoDeep via-indigoMid to-coralPop text-white flex flex-col items-center justify-center shadow-2xl relative">
+          <span class="text-4xl mb-1">🎧</span>
+          <span class="text-[10px] font-extrabold text-amberGlow">ميتانويا بودكاست</span>
+        </div>
+
+        <div class="space-y-1 max-w-xs">
+          <h3 id="pod-title" class="font-black text-base text-indigoDeep">عنوان الحلقة</h3>
+          <p id="pod-sub" class="text-xs text-slate-500">استمع للتأمل بصوت دافئ في أي وقت</p>
+        </div>
+
+        <!-- موجات صوتية متحركة -->
+        <div id="pod-waves" class="h-8 flex items-center justify-center gap-1.5">
+          <span class="w-1.5 h-2 bg-coralPop rounded-full"></span>
+          <span class="w-1.5 h-4 bg-amberGlow rounded-full"></span>
+          <span class="w-1.5 h-6 bg-mintTeal rounded-full"></span>
+          <span class="w-1.5 h-3 bg-indigoMid rounded-full"></span>
+          <span class="w-1.5 h-5 bg-coralPop rounded-full"></span>
+          <span class="w-1.5 h-4 bg-amberGlow rounded-full"></span>
+          <span class="w-1.5 h-2 bg-mintTeal rounded-full"></span>
+        </div>
+
+        <!-- مشغل صوتي حقيقي إن وجد رابط MP3 -->
+        <audio id="real-podcast-audio" class="hidden" controls></audio>
+
+        <div id="pod-controls-card" class="w-full max-w-xs bg-white rounded-3xl p-4 border border-stone-200 shadow-sm space-y-3">
+          <div class="flex items-center justify-center gap-4">
+            <button onclick="cyclePodcastSpeed()" id="pod-speed-btn" class="px-2.5 py-1 rounded-xl bg-sand text-indigoDeep text-xs font-extrabold">1x</button>
+            <button onclick="togglePodcastPlay()" id="pod-play-btn" class="w-14 h-14 rounded-full bg-indigoDeep text-amberGlow text-xl flex items-center justify-center shadow-lg active:scale-95 transition">
+              ▶
+            </button>
+            <button onclick="switchExperienceMode('read')" class="px-2.5 py-1 rounded-xl bg-sand text-indigoDeep text-xs font-extrabold">النص 📖</button>
+          </div>
+          <p id="pod-status-note" class="text-[11px] text-slate-500">جاري تشغيل القراءة الصوتية للحلقة — يمكنك إرفاق ملف MP3 من لوحة الإدارة</p>
+        </div>
+      </div>
+
+      <!-- الوضع 3: مشغل الفيديو (Video Mode) -->
+      <div id="exp-video-box" class="hidden flex-1 flex-col items-center justify-center px-5 py-6 space-y-4 overflow-y-auto">
+        <div id="video-embed-wrapper" class="w-full aspect-video rounded-3xl bg-indigoDeep text-white overflow-hidden shadow-xl flex flex-col items-center justify-center p-6 text-center space-y-3">
+          <span class="text-4xl">🎬</span>
+          <h3 class="font-black text-sm text-amberGlow">فيديو الحلقة قيد التجهيز</h3>
+          <p class="text-xs text-indigo-200 leading-relaxed">يمكنك إضافة رابط فيديو يوتيوب لهذا الكتيّب من تبويب «الإدارة ← إضافة محتوى» ليظهر هنا مباشرة.</p>
+          <button onclick="switchExperienceMode('read')" class="px-4 py-2 rounded-xl bg-amberGlow text-indigoDeep font-extrabold text-xs">
+            العودة للقراءة التفاعلية 📖
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- صانع بطاقات الاقتباس (Story Card Modal)    -->
+    <!-- ========================================== -->
+    <div id="story-modal" class="hidden absolute inset-0 z-50 bg-indigoDeep/80 backdrop-blur-sm flex items-center justify-center p-5">
+      <div class="bg-white rounded-3xl w-full max-w-sm p-5 space-y-4 animate-card shadow-2xl">
+        <div class="flex items-center justify-between">
+          <h3 class="font-extrabold text-sm text-indigoDeep">🎨 بطاقة Story للمشاركة</h3>
+          <button onclick="closeStoryModal()" class="text-xs font-bold text-slate-500 px-2.5 py-1 rounded-lg bg-sand">إغلاق</button>
+        </div>
+
+        <div id="story-preview-card" class="rounded-2xl p-6 bg-gradient-to-br from-indigoDeep via-indigoMid to-purple-900 text-white shadow-inner space-y-4">
+          <div class="flex items-center justify-between opacity-85 text-[10px]">
+            <span class="font-extrabold text-amberGlow">ميتانويا • Metanoia</span>
+            <span id="st-series">بَرَاشِيت</span>
+          </div>
+          <p id="st-text" class="font-serif text-lg leading-relaxed text-center text-amber-50 py-2">
+            «وَقَالَ اللهُ: لِيَكُنْ نُورٌ، فَكَانَ نُورٌ.»
+          </p>
+          <div class="pt-2 border-t border-white/15 flex items-center justify-between text-[10px] text-indigo-200">
+            <span id="st-author">سفر التكوين 1: 3</span>
+            <span>📲 رحلة تغيير الفكر والقلب</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-center gap-3">
+          <button onclick="setStoryTheme('indigo')" class="w-7 h-7 rounded-full bg-indigoDeep border-2 border-amberGlow"></button>
+          <button onclick="setStoryTheme('coral')" class="w-7 h-7 rounded-full bg-gradient-to-br from-amber-600 to-coralPop border-2 border-white shadow"></button>
+          <button onclick="setStoryTheme('mint')" class="w-7 h-7 rounded-full bg-gradient-to-br from-teal-700 to-mintTeal border-2 border-white shadow"></button>
+        </div>
+
+        <div class="flex gap-2">
+          <button onclick="saveStoryQuote()" class="flex-1 py-2.5 rounded-2xl bg-sand text-indigoDeep font-extrabold text-xs">🔖 حفظ في حسابي</button>
+          <button onclick="copyStoryQuote()" class="flex-[1.5] py-2.5 rounded-2xl bg-gradient-to-l from-amberGlow to-coralPop text-indigoDeep font-black text-xs shadow-md">📋 نسخ للمشاركة</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- شريط التنقل السفلي (5 تبويبات متكاملة)     -->
+    <!-- ========================================== -->
+    <nav class="bg-white border-t border-stone-200/90 px-2 py-2 flex items-center justify-around z-20">
+      <button onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center gap-0.5 text-indigoDeep font-extrabold transition">
+        <span class="px-2.5 py-1 rounded-xl bg-amberSoft text-sm">🏠</span>
+        <span class="text-[10px]">الرئيسية</span>
+      </button>
+
+      <button onclick="switchTab('library')" id="nav-library" class="flex flex-col items-center gap-0.5 text-slate-400 font-semibold transition">
+        <span class="px-2.5 py-1 rounded-xl text-sm">📚</span>
+        <span class="text-[10px]">المكتبة</span>
+      </button>
+
+      <button onclick="switchTab('community')" id="nav-community" class="flex flex-col items-center gap-0.5 text-slate-400 font-semibold transition">
+        <span class="px-2.5 py-1 rounded-xl text-sm">✍️</span>
+        <span class="text-[10px]">أقلامنا</span>
+      </button>
+
+      <button onclick="switchTab('profile')" id="nav-profile" class="flex flex-col items-center gap-0.5 text-slate-400 font-semibold transition">
+        <span class="px-2.5 py-1 rounded-xl text-sm">👤</span>
+        <span class="text-[10px]">حسابي</span>
+      </button>
+
+      <button onclick="switchTab('admin')" id="nav-admin" class="flex flex-col items-center gap-0.5 text-slate-400 font-semibold transition">
+        <span class="px-2.5 py-1 rounded-xl text-sm">⚙️</span>
+        <span class="text-[10px]">الإدارة</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <script>
+    // ========================================================
+    // 1. قاعدة بيانات الكتيبات الـ 8 الكاملة (3 سلاسل متكاملة)
+    // ========================================================
+    const categories = [
+      { id: 'word', name: 'عيش الكلمة', icon: '📖' },
+      { id: 'identity', name: 'الكرازة والهوية', icon: '🕯️' },
+      { id: 'god', name: 'الله', icon: '☀️' },
+      { id: 'religion', name: 'الدين', icon: '⛪' }
+    ];
+
+    const bookletsDB = {
+      // -------------------- سلسلة 1: بَرَاشِيت: ثورة العهد --------------------
+      'bereshit-1': {
+        id: 'bereshit-1',
+        seriesId: 'bereshit',
+        categoryId: 'word',
+        seriesTitle: 'بَرَاشِيت: ثورة العهد',
+        number: 'الكتيّب 01',
+        title: 'لما الواحد يتكلم.. والآلهة المزيفة تسكت',
+        subtitle: 'إزاي الفوضى بتترتب وتتحول لكون؟ (سفر التكوين 1: 1 - 5)',
+        youtubeUrl: '',
+        podcastUrl: '',
+        pages: [
+          {
+            type: 'intro',
+            badge: 'بَرَاشِيت 01 • سفر التكوين 1: 1 - 5',
+            title: 'لما الواحد يتكلم.. والآلهة المزيفة تسكت',
+            subtitle: 'إزاي الفوضى بتترتب وتتحول لكون؟',
+            scripture: '«فِي الْبَدْءِ خَلَقَ اللهُ السَّمَاوَاتِ وَالأَرْضَ. وَكَانَتِ الأَرْضُ خَرِبَةً وَخَالِيَةً، وَعَلَى وَجْهِ الْغَمْرِ ظُلْمَةٌ، وَرُوحُ اللهِ يَرِفُّ عَلَى وَجْهِ الْمِيَاهِ. وَقَالَ اللهُ: "لِيَكُنْ نُورٌ"، فَكَانَ نُورٌ. وَرَأَى اللهُ النُّورَ أَنَّهُ حَسَنٌ. وَفَصَلَ اللهُ بَيْنَ النُّورِ وَالظُّلْمَةِ. وَدَعَا اللهُ النُّورَ نَهَارًا، وَالظُّلْمَةَ دَعَاهَا لَيْلاً. وَكَانَ مَسَاءٌ وَكَانَ صَبَاحٌ يَوْمًا وَاحِدًا.»',
+            secTitle: 'أولاً: نفهم المشهد من زاوية الزمن والمكان',
+            body: 'تخيل معايا شعب لسه خارج من مصر، بلد مليانة معابد وآلهة للشمس والطبيعة، ورايح يعيش وسط شعوب تانية (في بابل وكنعان) غرقانة في أساطير وخرافات. المعركة وقتها ما كانتش "هل ربنا موجود أصلاً؟"، لأ؛ المعركة الحقيقية كانت ضد فكرة تعدد الآلهة والخوف من الأساطير اللي كانت مستعبدة عقول الناس. النص ده نزل كأنه "بيان تحرير" بيقلب الترابيزة على كل الخرافات دي.'
+          },
+          {
+            type: 'terms',
+            heading: '2. مفاتيح النص بلغته الأصلية (العبري)',
+            items: [
+              { w: '«فِي الْبَدْءِ» (بَرَاشِيت - Bərēʾšīt)', d: 'معناها "نقطة الانطلاق والتأسيس المنظم". عكس ملحمة إنوما إيليش البابلية اللي بتبدأ بصراع الآلهة، النص بيقولك: الكون ليه قائد واحد، خارج المادة، بدأ الحكاية بإرادته.' },
+              { w: '«خَلَقَ» (بَرَأ - Bārāʾ)', d: 'فعل حصري لله وبس. لا بيحتاج أدوات ولا خناقة؛ آلهة الأساطير كانت "صنايعية" بتشكل بالعنف، لكن إله التكوين بيخلق من العدم بمنتهى الهدوء.' },
+              { w: '«السَّمَاوَاتِ وَالأَرْضَ» (الدمج القطبي)', d: 'تقول الحاجة وعكسها عشان تقصد الكل؛ يعني كل حاجة من فوق لتحت بتاعة ربنا، مفيش عوالم سرية ولا آلهة مستخبية.' },
+              { w: '«خَرِبَةً وَخَالِيَةً» (تَهُو وَبَهُو)', d: 'معناها "عجينة خام لسه ماتشكلتش، ومكان فاضي لسه ماتفرشش". المادة مستنية اللمسة الهندسية اللي تديها وظيفة.' },
+              { w: '«الْغَمْر» (تِهوم - Tehom)', d: 'شبه اسم التنينة المرعبة "تيامات"، بس الكاتب شال منها أي صفة وحشية وخلاها مجرد "شوية مية" فيزيائية مستنية أمر ربنا.' },
+              { w: '«يَرِفُّ» (مِرَاحِيفِت - Merachephet)', d: 'طائر فارد جناحاته بحنية على عشه عشان يدفي البيض ويحمي الحياة. ربنا احتضن الفوضى برقة عشان يطلع منها حياة.' },
+              { w: '«وَقَالَ اللهُ: لِيَكُنْ نُورٌ»', d: 'النور اتوجد في اليوم الأول والشمس ماجتش غير في اليوم الرابع! يعني النور والوقت هدية من الخالق مش ملك للكواكب.' },
+              { w: '«أَنَّهُ حَسَنٌ» (طُوف - Tov)', d: 'يعني "مظبوط، يؤدي وظيفته بامتياز، وجميل". الدنيا اتخلقت عشان تكون بيت مريح ومضياف لينا.' }
+            ]
+          },
+          {
+            type: 'life',
+            heading: 'ثانياً: القصة دي بتحصل جواك وفي بيتك دلوقتي',
+            box1Title: '1. جوه دماغك: إزاي تتعامل مع "الفوضى الداخلية"؟',
+            box1Body: 'قاعد في أوضتك بالليل ودماغك مبتفصلش، وحاسس إن حياتك "خربة وخالية". بص لروح الله: مش ماسك كرباج يجلد الفوضى، ده "بيرفّ" بحنية فوق الضلمة. أنت مش محتاج تجلد ذاتك عشان تتغير؛ سمّي مخاوفك باسمها الحقيقي زي ما ربنا سمّى الليل والنهار، فتتحول من وحوش مرعبة لمجرد ملفات محتاجة تترتب.',
+            quote1: '«أنت مش محتاج تجلد ذاتك عشان تتغير؛ أنت محتاج تطلب الحضور الهادي يطبطب على كركبتك.»',
+            box2Title: '2. جوه بيتك: من ساحة خناق لمساحة أمان',
+            box2Body: 'الضغوط ممكن تحول أي بيت لـ "بابل صغيرة" مليانة زعيق. سفر التكوين بيقدم ثورة: البيت مش معسكر جيش، البيت "مساحة حياة جديدة". كلمة تشجيع واحدة صادقة («ليكن نور») كفيلة تطمن قلب خايف وتقوله: أنت كويس وبكرة أحلى.',
+            quote2: '«كلمة تشجيع واحدة صادقة كفيلة تطمن قلب خايف: أنت كويس، وبكرة أحلى.»'
+          },
+          {
+            type: 'fathers',
+            heading: 'ثالثاً: من أقوال الآباء',
+            quotes: [
+              { t: '«إن الله لم يخلق العالم عن حاجة أو اضطرار، ولا نتيجة صراع كما ادعى الوثنيون، بل أفاض جوده بكلمته المحيية ليجعل من العدم وجوداً حسناً يتسع لسكناه مع الإنسان.»', a: 'القديس أثناسيوس الرسولي — رسالة ضد الوثنيين' },
+              { t: '«حينما تسمع: "وروح الله يرف على وجه المياه"، كُن كمن يرى طائراً يبسط جناحيه ليدفئ عشه ويمنح الحياة لما هو بلا قوة.»', a: 'القديس باسيليوس الكبير — عظات على الأيام الستة' }
+            ]
+          },
+          {
+            type: 'action',
+            heading: 'رابعاً: تحدي النهاردة وصلاة سريعة',
+            steps: [
+              'اختار النهاردة موضوع واحد عامل لك قلق، واكتبه في ورقة باسمه الحقيقي وشيل منه صفة "المصيبة".',
+              'خد قرار إنك مش هتزعق ولا تتعصب بسبب الموضوع ده طول اليوم.',
+              'قول كلمة تشجيع أو سلام واحدة لحد في بيتك أو صحابك، ونام وإنت واثق إن الصبح طالع.'
+            ],
+            prayer: 'يا رب، يا صاحب البدايات ومنبع النور. بنحط قدامك كل كركبة جوانا، وكل حيرة وتشتت. رِفّ بروحك وسلامك على أفكارنا وقلقنا، واتكلم جوه قلوبنا بكلمتك الحية: «ليكن نور». املى بيوتنا سلام وطولة بال، عشان نكون سبب أمان وسند لكل اللي حوالينا. آمين.'
+          },
+          {
+            type: 'glossary',
+            heading: 'خامساً: قاموس المصطلحات والمقارنة السريعة',
+            terms: [
+              { w: 'الزمكان (Spacetime)', d: 'نفهم النص في وقته ومكانه اللي اتكتب فيه، من غير ما نحمّله أفكار عصرنا بالعافية.' },
+              { w: 'البوليميك (Polemics)', d: 'أسلوب كتابة ذكي بيرد على أفكار غلط منتشرة في وقته وبيهدّها عشان يبني مكانها الصح.' },
+              { w: 'التعالي الجذري (Transcendence)', d: 'ربنا مش جزء من الطبيعة ولا محكوم بقوانينها؛ هو خالقها وأكبر منها بكتير.' },
+              { w: 'الميرزم (Merism)', d: 'تقول الحاجة وعكسها (زي: الليل والنهار) عشان تقصد كل حاجة بينهم.' }
+            ],
+            table: [
+              { axis: 'أصل الكون', old: 'خناقة دموية بين الآلهة', now: 'تخطيط حر ومحب من إله واحد' },
+              { axis: 'الفوضى', old: 'وحش مرعب مستني يبلعك', now: 'مادة خام مستنية لمسة حنية' },
+              { axis: 'الخلق', old: 'سحر وتعب ومجهود', now: 'كلمة واحدة: «قَالَ... فَكَانَ»' }
+            ],
+            refs: 'المراجع: John H. Walton (The Lost World of Genesis One) • Nahum Sarna • القديس باسيليوس الكبير • القديس أثناسيوس الرسولي.'
+          },
+          { type: 'assessment' }
+        ]
+      },
+
+      'bereshit-2': {
+        id: 'bereshit-2',
+        seriesId: 'bereshit',
+        categoryId: 'word',
+        seriesTitle: 'بَرَاشِيت: ثورة العهد',
+        number: 'الكتيّب 02',
+        title: 'سقف السماء مش إله',
+        subtitle: 'إزاي القبة الكونية اتفككت وتحولت لخيمة أمان؟ (سفر التكوين 1: 6 - 8)',
+        youtubeUrl: '',
+        podcastUrl: '',
+        pages: [
+          {
+            type: 'intro',
+            badge: 'بَرَاشِيت 02 • سفر التكوين 1: 6 - 8',
+            title: 'سقف السماء مش إله',
+            subtitle: 'إزاي القبة الكونية اتفككت وتحولت لخيمة أمان؟',
+            scripture: '«وَقَالَ اللهُ: "لِيَكُنْ جَلَدٌ فِي وَسَطِ الْمِيَاهِ. وَلْيَكُنْ فَاصِلاً بَيْنَ مِيَاهٍ وَمِيَاهٍ". فَعَمِلَ اللهُ الْجَلَدَ، وَفَصَلَ بَيْنَ الْمِيَاهِ الَّتِي تَحْتَ الْجَلَدِ وَالْمِيَاهِ الَّتِي فَوْقَ الْجَلَدِ. وَكَانَ كَذلِكَ. وَدَعَا اللهُ الْجَلَدَ سَمَاءً. وَكَانَ مَسَاءٌ وَكَانَ صَبَاحٌ يَوْمًا ثَانِيًا.»',
+            secTitle: 'أولاً: نفهم المشهد من زاوية الزمن والمكان',
+            body: 'في ثقافة الشرق الأدنى زمان، الفضاء ما كانش مجرد هوا، ده كان مصدر رعب وجودي. في أساطير بابل، الإله مردوخ شق جثة الوحش "تيامات" نصين ورفع نصها كسقف وحط حراس بالسلاح عشان المية ما تخرش. وفي مصر، الإلهة "نوت" كانت بتمثل السقف اللي الناس بتقدمله تعاويذ عشان ما يقعش. النص الكتابي جه عشان يكسر الرعب ده تماماً.'
+          },
+          {
+            type: 'terms',
+            heading: '2. مفاتيح النص بلغته الأصلية (العبري)',
+            items: [
+              { w: '«لِيَكُنْ جَلَدٌ» (رَقِيع - Rāqîaʿ)', d: 'مصطلح من ورش الحدادة وصناعة الخيام؛ معناه "صفيحة مطروقة أو مظلة مفرودة زي الخيمة". السما مش إله ولا جثة وحش، دي خيمة أمان مفرودة بإيد ربنا.' },
+              { w: '«فَاصِلاً بَيْنَ مِيَاهٍ وَمِيَاهٍ» (هَبْدِيل)', d: 'الفصل والترتيب هو سر النظام؛ المية ما اتهزمتش بسلاح، لكن اتحطلها حدود وقوانين ما تقدرش تتخطاها.' },
+              { w: '«وَدَعَا اللهُ الْجَلَدَ سَمَاءً» (شَامَايِم)', d: 'التسمية إعلان ملكية وتحديد وظيفة؛ السما مش مملكة مستقلة لآلهة بتطير، دي مساحة تحت سيطرة الواحد.' },
+              { w: 'مفاجأة اليوم التاني (فين "أَنَّهُ حَسَنٌ"؟)', d: 'اليوم التاني هو الوحيد اللي ربنا ما قالش فيه "إنه حسن" لأن عملية الفرز كانت لسه بتكمل في اليوم التالت؛ البناء خطوات متكاملة مش ضربة حظ.' }
+            ]
+          },
+          {
+            type: 'life',
+            heading: 'ثانياً: القصة دي بتحصل جواك وفي بيتك دلوقتي',
+            box1Title: '1. جوه دماغك: إزاي تعمل "مساحة للتنفس" وترسم حدودك؟',
+            box1Body: 'لما مية الماضي بندمه ومية المستقبل بقلقه يضغطوا عليك، بتحس إن سقف حياتك هيقع. الجلد بيعلمك صناعة الحدود الفاصلة (Boundary Making): اعمل "رَقِيع" يفصل بين مشاعرك وبين ردود أفعالك، وبين اللي في إيدك واللي بره قدرتك.',
+            quote1: '«الجلد بيعلمك تحط حد فاصل بين ضغوط إمبارح ومخاوف بكرة فتخلق لنفسك مساحة أمان.»',
+            box2Title: '2. جوه بيتك: المظلة اللي بتحميكم من طوفان العالم',
+            box2Body: 'العالم بيغرق بيوتنا بدوشة السوشيال ميديا والمنافسة. البيت السوي هو "رَقِيع" ومظلة أمان بتعمل فاصل صحي بين سموم الشارع وبين هدوء البيت، والأهل بيقفوا كحائط صد يمتص الصدمات.',
+            quote2: '«البيت السوي هو خيمة ستر ومظلة أمان تحمي براءة الولاد من طوفان الضغوط.»'
+          },
+          {
+            type: 'fathers',
+            heading: 'ثالثاً: من أقوال الآباء',
+            quotes: [
+              { t: '«بكلمته فقط ثبت الفضاء وبسطه كخيمة خفيفة، وجعل فيه توازناً عجيباً يحفظ الماء فوقه برحمته دون أن يغرق الأرض تحته.»', a: 'القديس يوحنا ذهبي الفم — شرح سفر التكوين (العظة الرابعة)' },
+              { t: '«كما فصل الله المياه ليصنع متسعاً للحياة، هكذا ينبغي للنفس أن تفصل بين الأفكار الروحية والأهواء الترابية.»', a: 'القديس غريغوريوس النيصي — في خلقة الإنسان' }
+            ]
+          },
+          {
+            type: 'action',
+            heading: 'رابعاً: تحدي النهاردة وصلاة سريعة',
+            steps: [
+              'حدد حاجة واحدة بتغرقك في توتر (أخبار، موبايل، مشاكل مش بتاعتك) وحط حد فاصل تقفل فيه الموبايل وتتنفس.',
+              'اتدرب تقول "لأ" لأي نقاش يستنزفك مالوش لازمة.',
+              'ما تنقلش قلق الشغل أو الدراسة لقعدة الأكل في بيتك.'
+            ],
+            prayer: 'يا رب، يا من بسطت السماوات كخيمة. بنرفع عينينا لسماك بثقة أولاد عارفين إنك ماسك الكون بإيدك الحنينة. افصل بين أفكار التعب والخوف وبين يقين محبتك، وانصب خيمة سترك فوق بيوتنا. آمين.'
+          },
+          {
+            type: 'glossary',
+            heading: 'خامساً: قاموس المصطلحات والمقارنة السريعة',
+            terms: [
+              { w: 'الرَّقِيع (Rāqîaʿ)', d: 'الممدود أو المبسوط كخيمة مفرودة فوق الأرض.' },
+              { w: 'الهلع الكوني (Cosmic Dread)', d: 'رعب قديم من إن قوى الطبيعة تدمر البشر بعشوائية.' },
+              { w: 'هَبْدِيل (Habdîl)', d: 'فعل عبري معناه الفصل والفرز لتحويل الفوضى لنظام.' }
+            ],
+            table: [
+              { axis: 'طبيعة السماء', old: 'جثة وحش متقطع (تيامات)', now: 'رقيع؛ مظلة أمان مخلوقة بأمر ربنا' },
+              { axis: 'استقرار الكون', old: 'حراسة عسكرية لآلهة تعبانة', now: 'استقرار مبني على كلمة أمر وقوانين حكيمة' }
+            ],
+            refs: 'المراجع: John H. Walton • Nahum M. Sarna • Paul H. Seely • القديس يوحنا ذهبي الفم.'
+          },
+          { type: 'assessment' }
+        ]
+      },
+
+      'bereshit-3': {
+        id: 'bereshit-3',
+        seriesId: 'bereshit',
+        categoryId: 'word',
+        seriesTitle: 'بَرَاشِيت: ثورة العهد',
+        number: 'الكتيّب 03',
+        title: 'الأرض مش إلهة.. والزرع من غير سحر',
+        subtitle: 'انحسار المياه، ظهور اليابسة، وتفكيك أساطير الخصوبة (تكوين 1: 9 - 13)',
+        youtubeUrl: '',
+        podcastUrl: '',
+        pages: [
+          {
+            type: 'intro',
+            badge: 'بَرَاشِيت 03 • سفر التكوين 1: 9 - 13',
+            title: 'الأرض مش إلهة.. والزرع من غير سحر',
+            subtitle: 'انحسار المياه وتفكيك أساطير الخصوبة',
+            scripture: '«وَقَالَ اللهُ: "لِتَجْتَمِعِ الْمِيَاهُ تَحْتَ السَّمَاءِ إِلَى مَكَانٍ وَاحِدٍ، وَلْتَظْهَرِ الْيَابِسَةُ". وَكَانَ كَذلِكَ. وَدَعَا اللهُ الْيَابِسَةَ أَرْضًا... وَقَالَ اللهُ: "لِتُنْبِتِ الأَرْضُ عُشْبًا وَبَقْلاً يُبْزِرُ بِزْرًا، وَشَجَرًا ذَا ثَمَرٍ يَعْمَلُ ثَمَرًا كَجِنْسِهِ، بِزْرُهُ فِيهِ عَلَى الأَرْضِ". وَكَانَ كَذلِكَ.»',
+            secTitle: 'أولاً: نفهم المشهد من زاوية الزمن والمكان',
+            body: 'في خيال شعوب كنعان زمان، الأرض كانت بتتعبد كـ "إلهة أم كبرى"، وكانوا فاكرين إن الزرع مستحيل يطلع غير بطقوس سحرية وقرابين للإله "بعل" و"عشتروت". النص الكتابي هنا نسف الخرافات دي وأعلن إن الأرض مجرد خليقة مطيعة بتثمر بقانون ربنا اللي جواها.'
+          },
+          {
+            type: 'terms',
+            heading: '2. مفاتيح النص بلغته الأصلية (العبري)',
+            items: [
+              { w: '«لِتَجْتَمِعِ الْمِيَاهُ... وَلْتَظْهَرِ الْيَابِسَةُ»', d: 'عكس ملحمة بعل ويمّ، مفيش حرب ضد البحار؛ ربنا بيأمر المية فبتتجمع في حدودها عشان اليابسة تظهر كبيت للإنسان.' },
+              { w: 'سحب الألوهية من الأرض (أֶרֶץ - ’Ereṣ)', d: 'تسميتها "أرضاً" يسحب منها أي قداسة وثنية؛ هي مساحة مباركة تحت سلطان الخالق.' },
+              { w: 'ثورة التكاثر الذاتي («بِزْرُهُ فِيهِ كَجِنْسِهِ»)', d: 'الضربة القاضية لسحر الخصوبة: البذرة شايلة شفرتها الوراثية جواها وبتنمو بقانون ربنا، مش بمزاج آلهة المطر.' },
+              { w: 'مضاعفة البركة («أَنَّهُ حَسَنٌ» مرتين)', d: 'أخد ختم الرضا مرتين: لما اليابسة استقرت، ولما الخضرة غطت الأرض وبقت واحة حياة.' }
+            ]
+          },
+          {
+            type: 'life',
+            heading: 'ثانياً: القصة دي بتحصل جواك وفي بيتك دلوقتي',
+            box1Title: '1. جوه دماغك: الخروج من السيولة لـ "أرض ثابتة"',
+            box1Body: 'انحسار المية وظهور اليابسة دعوة إنك تخرج من "سيولة المشاعر والمزاج" لـ "صلابة المبادئ". وافتكر قوة البذرة المستخبية: كل صبر وأمانة ومحاولات تعافي بتزرعها في السر شايلة بذرة ثمرتها جواها وهتطلع في وقتها.',
+            quote1: '«كل صبر وأمانة بتزرعها في السر شايلة بذرة ثمرتها جواها، وهتطلع في وقتها المظبوط.»',
+            box2Title: '2. جوه بيتك: بيت مبني على مبادئ وبيثمر «كجنسه»',
+            box2Body: 'التربية مش نسخ واستنساخ؛ كل طفل ليه طبيعته ومواهبه ("بذره فيه كجنسه"). دور البيت يوفر التربة الصالحة والمحبة من غير مقارنات تكسر ثقتهم في نفسهم.',
+            quote2: '«كل ابن وبنت بيكبروا حسب طبيعتهم المميزة كجنسهم، من غير مقارنات تكسر ثقتهم.»'
+          },
+          {
+            type: 'fathers',
+            heading: 'ثالثاً: من أقوال الآباء',
+            quotes: [
+              { t: '«صارت الأرض قادرة بذاك الأمر الأول أن تخرج خيراتها إلى انقضاء الدهر دون حاجة لأساطير السحر.»', a: 'القديس باسيليوس الكبير — عظات على الأيام الستة (العظة الخامسة)' },
+              { t: '«النفس البشرية تظل عقيمة ما لم تسكنها كلمة الله وتفيض فيها بأثمار الفضيلة والصلاح.»', a: 'القديس يوحنا ذهبي الفم — شرح سفر التكوين (العظة الخامسة)' }
+            ]
+          },
+          {
+            type: 'action',
+            heading: 'رابعاً: تحدي النهاردة وصلاة سريعة',
+            steps: [
+              'ازرع النهاردة بذرة خير واحدة أهملتها بسبب إحباطك من تأخر النتيجة (عادة حلوة، اعتذار، خطوة تعليمية).',
+              'بطّل تقارن نفسك بحد أو تقارن أولادك بغيرهم؛ افتكر إن كل كائن بيثمر «كجنسه».',
+              'اعمل في بيتك مساحة استقرار: ابعد عن الانفعال مع المشاكل العابرة.'
+            ],
+            prayer: 'يا رب، يا من ثبتت الأرض على قواعدها. شيل من قلوبنا كل تشتت، وبارك كل بذرة خير وتعب بنزرعها في بيوتنا وشغلنا، وادينا نعمة الصبر عشان نستنى الثمر في وقته. آمين.'
+          },
+          {
+            type: 'glossary',
+            heading: 'خامساً: قاموس المصطلحات والمقارنة السريعة',
+            terms: [
+              { w: 'ديانات الخصوبة', d: 'طقوس وثنية قديمة كانت بتربط المطر والزرع بسحر المعابد.' },
+              { w: 'كَجِنْسِهِ (Ləmînēhû)', d: 'مصطلح عبري يؤكد إن الكائنات شايلة أنظمة تكاثرها الخاصة حسب نظام الخالق.' }
+            ],
+            table: [
+              { axis: 'ظهور اليابسة', old: 'حرب ضد إله البحر (يمّ)', now: 'أمر هادي بيجمع المية ويُظهر الأرض' },
+              { axis: 'نمو الزرع', old: 'طقوس سحرية وجنسية', now: 'نظام حيوي: «بِزْرُهُ فِيهِ كَجِنْسِهِ»' }
+            ],
+            refs: 'المراجع: Richard S. Hess • Nahum M. Sarna • John H. Walton • القديس باسيليوس الكبير.'
+          },
+          { type: 'assessment' }
+        ]
+      },
+
+      // -------------------- سلسلة 2: رسائل بولس الشخصية --------------------
+      'paul-0': {
+        id: 'paul-0',
+        seriesId: 'paul',
+        categoryId: 'identity',
+        seriesTitle: 'رسائل بولس الشخصية',
+        number: 'الكتيّب 00 (تمهيدي)',
+        title: 'ما وراء السلامات.. أسرار الرسائل الشخصية لبولس',
+        subtitle: 'لما بولس يقلع بدلة المعلم الكبير ويقعد معانا في أوضة المعيشة',
+        youtubeUrl: '',
+        podcastUrl: '',
+        pages: [
+          {
+            type: 'intro',
+            badge: 'رسائل بولس 00 • 2 تيموثاوس 4: 9، 13',
+            title: 'ما وراء السلامات.. أسرار الرسائل الشخصية',
+            subtitle: 'أوضة المعيشة في حياة بولس الرسول',
+            scripture: '«بَادِرْ أَنْ تَجِيءَ إِلَيَّ سَرِيعًا... اَلرِّدَاءَ الَّذِي تَرَكْتُهُ فِي تَرُواسَ عِنْدَ كَارْبُسَ، أَحْضِرْهُ مَتَى جِئْتَ، وَالْكُتُبَ أَيْضًا وَلاَ سِيَّمَا الرُّقُوقَ.»',
+            secTitle: 'أولاً: إيه حكاية الكتيّب ده؟',
+            body: 'أغلبنا بيعدّي قائمة السلامات في آخر رسائل بولس بسرعة كأنها "سلام بقى" في آخر شات واتساب! بس السطور القصيرة دي هي "أوضة المعيشة" في حياة بولس؛ المكان اللي بيقعد فيه معانا كإنسان طبيعي زينا، بيحس بالبرد، وبيوحشه صحابه، وبيتوجع من الخذلان، وبيفرح بالجدعنة.'
+          },
+          {
+            type: 'life',
+            heading: 'ثانياً: بولس الإنسان والسر المستخبي',
+            box1Title: 'إنسان عايش الواقع مش في كوكب تاني',
+            box1Body: 'كان حافظ أسماء الناس البسيطة، وقلقان على معدة تيموثاوس التعبانة، ومحتاج جاكيت يدفيه في برد سجن المامرتين تحت الأرض في روما. الإيمان الحقيقي مش بيلغي احتياجاتنا البشرية والنفسية، بالعكس.. بيقدسها.',
+            quote1: '«السطور دي هي أوضة المعيشة في حياة بولس؛ بيحس بالبرد وبيوحشه صحابه زينا بالظبط.»',
+            box2Title: 'ليه ربنا ساب القصص دي في الكتاب؟',
+            box2Body: 'كل اسم في آخر الرسالة هو "التطبيق العملي" لموضوعها: لو الرسالة عن الثبات، يحط قصة واحد هرب (ديماس) وواحد كمل للآخر (لوقا). ولو عن الفرصة التانية، يحط قصة (مرقس). كل اسم مراية نفسية وروحية بنعيشها النهاردة بأسماء تانية!',
+            quote2: '«كل اسم في آخر الرسالة هو مراية نفسية وروحية بنعيشها النهاردة بأسماء تانية.»'
+          },
+          {
+            type: 'terms',
+            heading: 'ثالثاً: خريطة المقاطع الشخصية وقاموس العصر',
+            items: [
+              { w: 'رسالة رومية 16 (26 اسم!)', d: 'ورا كل اسم حكاية بطولة وجدعنة زي فيبي وبريسكلا وأكيلا وأم روفس.' },
+              { w: 'سجن المامرتين (Mamertine)', d: 'سجن روماني رطب ومضلم تحت الأرض في روما للمحكوم عليهم بالإعدام.' },
+              { w: 'الرقوق (Membranas)', d: 'جلود حيوانات مدبوغة كانت بتتكتب عليها الكتب المقدسة والورق الغالي.' },
+              { w: 'منهجنا في السلسلة', d: '6 خطوات ثابتة: الحكاية من أولها، الخيط المستخبي، كلام الآباء، الدرس النفسي، تطبيق عملي، وصلاة.' }
+            ]
+          },
+          {
+            type: 'action',
+            heading: 'رابعاً: صلاة نبدأ بيها السلسلة',
+            steps: [
+              'اقرأ 2 تيموثاوس 4: 9-22 بتركيز وتخيل المشهد جوه الزنزانة.',
+              'افتكر صديق أو خادم محتاج سؤال حقيقي النهاردة وابعتله رسالة صادقة.'
+            ],
+            prayer: 'يا رب، يا كاتب التاريخ وفاحص القلوب، بنشكرك لأن كلمتك حياة بتنبض بالحب والواقعية. علمنا نشوف ورا كل اسم حكاية، وورا كل موقف رسالة لقلوبنا النهاردة. آمين.'
+          },
+          { type: 'assessment' }
+        ]
+      },
+
+      'paul-1': {
+        id: 'paul-1',
+        seriesId: 'paul',
+        categoryId: 'identity',
+        seriesTitle: 'رسائل بولس الشخصية',
+        number: 'الكتيّب 01',
+        title: '"دِيمَاس".. ليه بنهرب لما الدنيا بتبرد؟',
+        subtitle: 'لما تمن الصداقة والمبدأ يغلى وقت الأزمة (2 تيموثاوس 4: 10)',
+        youtubeUrl: '',
+        podcastUrl: '',
+        pages: [
+          {
+            type: 'intro',
+            badge: 'رسائل بولس 01 • 2 تيموثاوس 4: 10',
+            title: '"دِيمَاس".. ليه بنهرب لما الدنيا بتبرد؟',
+            subtitle: 'تشريح الهروب النفسي وقت اشتداد الأزمة',
+            scripture: '«لأَنَّ دِيمَاسَ قَدْ تَرَكَنِي إِذْ أَحَبَّ الْعَالَمَ الْحَاضِرَ وَذَهَبَ إِلَى تَسَالُونِيكِي»',
+            secTitle: 'أولاً: الحكاية من أولها (مين هو ديماس؟)',
+            body: 'ديماس مكنش شخص غريب، ده كان شريك كفاح ومدحه بولس في رسالته لفليمون وكولوسي لما كان السجن مريح (إقامة جبرية). بس لما السجن اتحول لزنزانة إعدام تحت حكم نيرون، تمن الصداقة غلي؛ ديماس انهار وهرب على "تسالونيكي" (ميناء تجاري غني ومكان الراحة والأمان). كلمة "تركني" في اليوناني (egkatelipen) معناها: اتخلى عن شخص في وسط ورطته وسابه لوحده قدام الخطر.'
+          },
+          {
+            type: 'life',
+            heading: 'ثانياً: الخيط المستخبي والدرس النفسي',
+            box1Title: 'صراع بين حُبّين (آية 8 قصاد آية 10)',
+            box1Body: 'قبل سيرة ديماس بسطرين بولس بيقول: «للذين يحبون ظهوره»، وبعدها عن ديماس: «إذ أحب العالم الحاضر». القلب مبيشيلش حُبّين عكس بعض. ووجود ديماس في الكتاب جرس إنذار: خدمتك في أوقات الرخاء مش بتضمن ثباتك وقت الضيق طول ما قلبك مش متجذر في ربنا.',
+            quote1: '«وجودك وسط ناس عظيمة في أوقات الرخاء مش بيضمن ثباتك وقت الضيق.»',
+            box2Title: 'التبرير النفسي للهروب وأخلاقيات الوفاء',
+            box2Body: 'الإنسان مبيصحاش فجأة يقرر يخون؛ العقل بيبرر التراجع بصوت واطي: "أنا من حقي أرتاح وأخدم من بعيد!". بس الحقيقة هي الخوف وحب الراحة. الجدعنة الحقيقية بتتقاس بوجودك جنب صاحبك لما الكل يمشي، مش لما يكون في قمة نجاحه.',
+            quote2: '«العقل شاطر أوي في تجميل الهروب، بس الحقيقة البسيطة هي الخوف وحب الراحة.»'
+          },
+          {
+            type: 'fathers',
+            heading: 'ثالثاً: الآباء شافوا الموقف ده إزاي؟',
+            quotes: [
+              { t: '«بص على رقة بولس؛ لا بيشتم ديماس ولا بيلعنه، لكن بيقول الحقيقة بحزن. أول ما حب الراحة بيتسحب للقلب، بيلاقي ألف مبرر عشان يسيب طريق الجهاد.»', a: 'القديس يوحنا ذهبي الفم' },
+              { t: '«بولس مقالش إن ديماس أنكر الإيمان بلسانه، لكن قال: أحب العالم الحاضر. ساب بولس بقلبه الأول فمشيت رجليه وراه لتسالونيكي.»', a: 'القديس أغسطينوس' }
+            ]
+          },
+          {
+            type: 'action',
+            heading: 'رابعاً: تطبيق عملي وصلاة ختامية',
+            steps: [
+              'اكتشف "تسالونيكي" بتاعتك: إيه منطقة الراحة اللي بتهرب ليها لما الصح يكلفك تعب أو إحراج؟',
+              'تدريب الوجود وقت الضيق: فكر في شخص واحد تعبان أو وحيد الأسبوع ده، روح زوره أو اتصل بيه وخليك "لوقا" اللي فضل موجود.',
+              'قبل ما تنسحب من أي مسؤولية اسأل نفسك: أنا بنسحب بتوجيه من ربنا ولا عشان بشتري راحتي؟'
+            ],
+            prayer: 'يا رب، بنعترف قدامك إن جوه كل واحد فينا "ديماس" صغير بيخاف من التعب وبيجري ورا راحته. املا قلوبنا بحبك وحب الأبدية، وادينا شجاعة ووفاء نكون سند لكل شخص وحيد أو تعبان. آمين.'
+          },
+          { type: 'assessment' }
+        ]
+      },
+
+      // -------------------- سلسلة 3: أونلاين مع السماء --------------------
+      'online-0': {
+        id: 'online-0',
+        seriesId: 'online',
+        categoryId: 'god',
+        seriesTitle: 'أونلاين مع السماء',
+        number: 'الكتيّب 00 (تمهيدي)',
+        title: 'شجرة ولا عصافة؟',
+        subtitle: 'تأليف: كوتش نصر صليب (مقتبس من كتاب: قناطر الروح)',
+        youtubeUrl: '',
+        podcastUrl: '',
+        pages: [
+          {
+            type: 'intro',
+            badge: 'أونلاين مع السماء 00 • مزمور 1',
+            title: 'شجرة ولا عصافة؟',
+            subtitle: 'تأليف: كوتش نصر صليب (من كتاب: قناطر الروح)',
+            scripture: '«فَيَكُونُ كَشَجَرَةٍ مَغْرُوسَةٍ عِنْدَ مَجَارِي الْمِيَاهِ، الَّتِي تُعْطِي ثَمَرَهَا فِي أَوَانِهِ، وَوَرَقُهَا لاَ يَذْبُلُ... لَيْسَ كَذلِكَ الأَشْرَارُ، لكِنَّهُمْ كَالْعُصَافَةِ الَّتِي تُذَرِّيهَا الرِّيحُ.»',
+            secTitle: '1. خطاف البداية والنظرة السائدة',
+            body: 'في يوم هوا شديد، بتشوف قش ناشف (عُصافة) أول نسمة بتطيره، وشجرة ضخمة جذعها ثابت كأنه جبل. لما بتمر بأزمة أو ضغط، علاقتك بربنا عاملة إزاي؟ كتير مننا اتعود يتعامل مع الصلاة كأنها "مهمة في قائمة مهام" (To-Do List) أو واجب روتيني، فأول ما بتخبطنا عاصفة بنلاقي التدين الشكلي ده مش سندنا.'
+          },
+          {
+            type: 'life',
+            heading: '2. جوهر الفكرة: من "المونولوج" لـ "الديالوج"',
+            box1Title: 'العبور من الضفة الجافة للحوار القلبي الحي',
+            box1Body: 'في كتاب «قناطر الروح»، بنكتشف الفرق بين الضفة الأولى (المونولوج الطقسي الجاف: ترديد كلام من طرف واحد بقناع المثالية) وبين الضفة التانية (الديالوج القلبي الحي: حوار متبادل من القلب كابن قدام أبوه تحكيله خوفك وفرحك وتسمع صوته).',
+            quote1: '«اقلع قناع المثالية، واقعد قدام ربنا كابن قدام أبوه في ديالوج قلبي حي.»',
+            box2Title: 'مرآة النفس والعبور للآخر',
+            box2Body: 'اللي علاقته بربنا "مونولوج" بيكون قاسي في أحكامه على الناس وبيدور على البرستيج. أما الشجرة المغروسة فبتعرف تسمع اللي قدامها بقلبها ومش بتخاف تعترف بضعفها.',
+            quote2: '«الشجرة لا تُثمر من أوراقها المعلقة في الهواء، بل من جذورها المخفية التي تشرب من النبع.»'
+          },
+          {
+            type: 'action',
+            heading: '3. تحدي اليوم وهمسة من القلب',
+            steps: [
+              'اقرأ المزمور الأول ببطء شديد (6 آيات بس!).',
+              'غمض عينيك دقيقة، واتخيل إن قلبك بيمد جذوره جوه محبة ربنا، واحكيله في جملة عامية بسيطة عن أكتر حاجة شاغلة بالك.'
+            ],
+            prayer: 'يا أبويا السماوي.. كتير وقفت قدامك كأني بؤدي واجب ونسيت إنك أب مستني يسمع صوت ابنه. النهاردة بخلع قناع المثالية، وبجيلك بقلبي زي ما هو. اغرسني فيك زي الشجرة، وخلّي كلامي معاك حوار حياة. آمين.'
+          },
+          { type: 'assessment' }
+        ]
+      },
+
+      'online-1': {
+        id: 'online-1',
+        seriesId: 'online',
+        categoryId: 'god',
+        seriesTitle: 'أونلاين مع السماء',
+        number: 'الكتيّب 01',
+        title: 'ليه حاسس إن فيه ستارة بيني وبين ربنا؟',
+        subtitle: 'تأليف: كوتش نصر صليب (مقتبس من كتاب: قناطر الروح)',
+        youtubeUrl: '',
+        podcastUrl: '',
+        pages: [
+          {
+            type: 'intro',
+            badge: 'أونلاين مع السماء 01 • قناطر الروح',
+            title: 'ليه حاسس إن فيه ستارة بيني وبين ربنا؟',
+            subtitle: 'العبور من سيكولوجية المنفى إلى حضن الأبوة',
+            scripture: '«فَلْنَتَقَدَّمْ بِثِقَةٍ إِلَى عَرْشِ النِّعْمَةِ لِكَيْ نَنَالَ رَحْمَةً وَنَجِدَ نِعْمَةً عَوْنًا فِي حِينِهِ.» (عبرانيين 4: 16)',
+            secTitle: '1. إحساس "أنا مش مستاهل" ونادي الـ VIP',
+            body: 'لما بنغلط أو نتلخبط، صوت جوه دماغنا بيهمس: "إنت وشك فين تصلي دلوقتي؟ خليك واقف بره لحد ما تصلح نفسك!". وبسبب فكرة إن العلاقة مع ربنا "نادي VIP" للمثاليين بس، يا إما بننسحب ونبطل نصلي، يا إما بنمثل ونلبس قناع التدين الرسمي.'
+          },
+          {
+            type: 'life',
+            heading: '2. رحلة الخروج من المنفى (منظور قناطر الروح)',
+            box1Title: 'الحجاب في خيمة الاجتماع وقصة حنة أم صموئيل',
+            box1Body: 'زمان كان فيه "ستارة سميكة" بتفصل الناس عن قدس الأقداس وبتقولهم "مكانكم بره"، لدرجة إن حنة أم صموئيل لما دخلت تبكي وتتكلم من قلبها، الكاهن افتكرها سكرانة! الخبر المفرح إن زمن الستارة انتهى؛ ربنا نفسه شق الستارة عشان يدخلك أوضة الحب.',
+            quote1: '«المريض لا ينتظر أن يُشفى أولاً ثم يذهب إلى الطبيب، بل يذهب إليه لكي يشفيه. — القديس يوحنا ذهبي الفم»',
+            box2Title: 'العبور للآخر: تبقى مساحة أمان',
+            box2Body: 'لما بتتحرر من سيكولوجية الستارة وتدرك إن ربنا بيقبلك رغم ضعفك، بتبطل تقسم الناس درجة أولى وتانية، وبتبقى مساحة أمان لأصحابك وعيلتك.',
+            quote2: '«ربنا مش عايزك متفرج واقف في الحوش بره، هو شق الستارة عشان يدخلك أوضة الحب.»'
+          },
+          {
+            type: 'action',
+            heading: '3. تحدي اليوم وهمسة من القلب',
+            steps: [
+              'افتكر أي موقف حاسس فيه بالتقصير ومخليك مكسوف تصلي، وبدل ما تهرب قول لربنا بصوت مسموع: "يا رب أنا جايلك عشان إنت أبويا وأنا محتاجلك".',
+              'خليك ساكت 30 ثانية واستقبل إحساس إن الباب مفتوح مش مقفول في وشك.'
+            ],
+            prayer: 'يا أبويا.. ياللي شقيت الستارة بإيدك عشان ميبقاش فيه مسافة بيني وبينك. النهاردة بقبل دعوتك إني أدخل لجوه بضعفي وكركبتي، واثق إن حضنك أوسع من أي غلطة. آمين.'
+          },
+          { type: 'assessment' }
+        ]
+      },
+
+      'online-2': {
+        id: 'online-2',
+        seriesId: 'online',
+        categoryId: 'god',
+        seriesTitle: 'أونلاين مع السماء',
+        number: 'الكتيّب 02',
+        title: 'لما الصلاة تتحول لروتين أوتوماتيك',
+        subtitle: 'تأليف: كوتش نصر صليب (مقتبس من كتاب: قناطر الروح)',
+        youtubeUrl: '',
+        podcastUrl: '',
+        pages: [
+          {
+            type: 'intro',
+            badge: 'أونلاين مع السماء 02 • قناطر الروح',
+            title: 'لما الصلاة تتحول لروتين أوتوماتيك',
+            subtitle: 'كسر حالة الطيار الآلي (Auto-Pilot) والحجاب الفارغ',
+            scripture: '«يَقْتَرِبُ إِلَيَّ هذَا الشَّعْبُ بِفَمِهِ، وَيُكْرِمُنِي بِشَفَتَيْهِ، وَأَمَّا قَلْبُهُ فَمُبْتَعِدٌ عَنِّي بَعِيدًا.» (متى 15: 8)',
+            secTitle: '1. حالة الـ Auto-Pilot وفخ إمضاء الحضور',
+            body: 'زي ما بتسوق في طريق حافظه وتوصل من غير ما تفتكر عديت على إيه، ساعات بنقف نصلي ولساننا بيتحرك بسلاسة بس دماغنا في خروجة بكرة أو امتحان! بنعامل الصلاة كأنها "بصمة حضور وانصراف" عشان ضميرنا يرتاح، أو "زرار سحري" يمشي مصالحنا.'
+          },
+          {
+            type: 'life',
+            heading: '2. كارثة "الحجاب الفارغ" وبيروقراطية الفراغ',
+            box1Title: 'قصة شيلوه وجبعون والآلة الشبحية',
+            box1Body: 'في شيلوه، الناس اتعودت على ربنا واستخدموا تابوت العهد كـ "تميمة حظ" في الحرب فاتهزموا واتسرق التابوت. والأخطر في "جبعون" لمدة 100 سنة: الكهنة كانوا بيبخروا قدام الستارة بمنتهى الاحترافية، بس قدس الأقداس ورا الستارة كان فاضي تماماً! احذر تتحول صلاتك لـ "آلة شبحية" ترضي الإيجو وقلبك فاضي.',
+            quote1: '«كيف تطلب من الله أن يسمع صلاةً أنت نفسك لم تسمعها؟ — القديس كبريانوس القرطاجي»',
+            box2Title: 'العبور للآخر: حضور حقيقي في العلاقات',
+            box2Body: 'لما بتكسر الروتين الآلي في صلاتك وتتعلم تحضر بقلبك، بتتحول في علاقاتك لشخص "حاضر بجد" (Present)؛ بتسيب الموبايل وتسمع صاحبك بتركيز ودفء.',
+            quote2: '«احذر تقف قدام حجاب فاضي.. افتح أوضة قلبك لحضور صاحب البيت الحي.»'
+          },
+          {
+            type: 'action',
+            heading: '3. تحدي اليوم وهمسة من القلب',
+            steps: [
+              'وأنت بتصلي النهاردة، أول ما تكتشف إن عقلك سرح ولسانك شغال أوتوماتيك.. دوس فرامل فوراً!',
+              'قول لربنا بصراحة: "يا رب لساني كان بيتكلم بس دماغي سرحت.. عايز أرجع أكون معاك دلوقتي"، وعيد آخر جملة ببطء.'
+            ],
+            prayer: 'يا رب.. نجيني من إني أتحول لإنسان آلي بيصلي بلسانه وقلبه غايب. افتح عيني عشان ما أقفش أبداً قدام حجاب فاضي، واملا أوضة قلبي بحضورك الحي. آمين.'
+          },
+          { type: 'assessment' }
+        ]
+      }
+    };
+
+    const seriesList = [
+      {
+        id: 'bereshit',
+        categoryId: 'word',
+        title: 'بَرَاشِيت: ثورة العهد',
+        desc: 'تفكيك الأساطير وبناء الوعي الروحي والنفسي في سفر التكوين',
+        mode: 'drip', // تتابعي يومي
+        color: 'from-indigoDeep to-indigoMid',
+        bookletIds: ['bereshit-1', 'bereshit-2', 'bereshit-3']
+      },
+      {
+        id: 'paul',
+        categoryId: 'identity',
+        title: 'رسائل بولس الشخصية',
+        desc: 'ما وراء السلامات.. حكايات إنسانية ونفسية من أوضة معيشة بولس',
+        mode: 'open', // مفتوح للاسترسال
+        color: 'from-coralPop to-amber-600',
+        bookletIds: ['paul-0', 'paul-1']
+      },
+      {
+        id: 'online',
+        categoryId: 'god',
+        title: 'أونلاين مع السماء',
+        desc: 'من المذابح الصامتة إلى الديالوج القلبي الحي (كتاب قناطر الروح)',
+        mode: 'open', // مفتوح للاسترسال
+        color: 'from-mintTeal to-teal-700',
+        bookletIds: ['online-0', 'online-1', 'online-2']
+      }
+    ];
+
+    // ========================================================
+    // 2. حالة التطبيق والتخزين الذكي (State)
+    // ========================================================
+    let state = {
+      unlockedDay: 1,
+      streak: 6,
+      completedBooklets: ['bereshit-1', 'online-0'],
+      libFilter: 'all',
+      joinedChallenge: false,
+      profile: {
+        name: 'نصر صليب',
+        bio: 'في رحلة يومية لتجديد الفكر والقلب ✨'
+      },
+      growth: {
+        spiritual: 84,
+        intellectual: 80,
+        psychological: 76
+      },
+      growthLogs: [
+        { date: 'اليوم', booklet: 'بَرَاشِيت 01', mood: 'محتاج هدوء وسط كركبة الأفكار 🌊', note: 'كتبت أكتر حاجة موتراني النهاردة وسميتها باسمها.' }
+      ],
+      privateMessages: [
+        {
+          id: 'pm-1',
+          sender: 'شاب من المجتمع',
+          date: 'منذ ساعتين',
+          question: 'يا كوتش ساعات بحس إني بصلي أوتوماتيك ومش حاسس بحاجة.. أبدأ أغير ده إزاي؟',
+          reply: 'أهلاً بيك يا بطل! ابدأ بـ 3 دقايق صمت قبل ما تنطق كلمة واحدة، واحكي لربنا بالعامية عن يومك زي ما بتحكي لصاحبك القريب.'
+        }
+      ],
+      publishedPosts: [
+        {
+          id: 'p-1',
+          author: 'مارينا عادل',
+          title: 'لما بطّلت أحارب نفسي.. بدأت أهدى',
+          verse: '«وَرُوحُ اللهِ يَرِفُّ عَلَى وَجْهِ الْمِيَاهِ»',
+          body: 'كنت فاكرة إن التغيير معناه إني ألوم نفسي كل ما أغلط، لحد ما فهمت إن روح ربنا بيرف بحنية زي طائر بيحضن عشه. الهدوء والقبول هما بداية التغيير.'
+        }
+      ],
+      pendingPosts: [
+        {
+          id: 'pend-1',
+          author: 'كيرلس مجدي',
+          title: 'تجربتي مع كسر الطيار الآلي في الصلاة',
+          verse: '«أَمَّا قَلْبُهُ فَمُبْتَعِدٌ عَنِّي بَعِيدًا»',
+          body: 'وقفت النهاردة في نص الصلاة لما لقيت دماغي سرحت وقلت لربنا بصراحة أنا آسف ورجعت أركز.. حسيت بفرق رهيب!'
+        }
+      ],
+      capsules: [
+        { date: 'تُفتح بعد 29 يوم', text: 'يا رب أكون اتعلمت أهدى وما أنفعلش بسرعة في البيت.' }
+      ],
+      savedQuotes: [
+        { text: '«وَقَالَ اللهُ: لِيَكُنْ نُورٌ، فَكَانَ نُورٌ.»', author: 'سفر التكوين 1: 3' }
+      ],
+      nudges: [
+        { time: 'الآن', tag: 'رسالة دعم مخصصة 🕊️', text: 'افتكر إن «الأرض كانت خربة وخالية» قبل ما يرف روح الله عليها.. خطوة واحدة بنور ربنا النهاردة تكفي!' },
+        { time: 'أمس', tag: 'تشجيع الاستريك 🔥', text: 'عاش! كملت 6 أيام متتالية في رحلة تجديد الذهن.' }
+      ],
+      checkedSteps: {}
+    };
+
+    let activeBookletId = null;
+    let activePageIdx = 0;
+    let activeExpMode = 'read';
+    let fontScale = 1.0;
+    let isSpeaking = false;
+    let isMusicPlaying = false;
+    let audioCtx = null;
+    let musicOscs = [];
+    let musicGain = null;
+    let podcastPlaying = false;
+    let podcastSpeedIdx = 0;
+    const podcastSpeeds = [1, 1.25, 1.5];
+
+    // ========================================================
+    // 3. عرض الرئيسية (Home) والسلاسل
+    // ========================================================
+    function renderHome() {
+      document.getElementById('hdr-streak').textContent = state.streak;
+      document.getElementById('home-user-initial').textContent = state.profile.name.trim().charAt(0) || 'م';
+
+      const container = document.getElementById('home-series-list');
+      container.innerHTML = seriesList.map(series => {
+        const isDrip = series.mode === 'drip';
+        const cards = series.bookletIds.map((bkId, idx) => {
+          const bk = bookletsDB[bkId];
+          if (!bk) return '';
+          const dayOrder = idx + 1;
+          const locked = isDrip && dayOrder > state.unlockedDay;
+          const isDone = state.completedBooklets.includes(bkId);
+
+          return `
+            <div onclick="${locked ? `showToast('🔒 هذا الكتيّب سيُفتح لك تلقائياً في اليوم ${dayOrder} لضمان استيعاب الفكرة')` : `openBooklet('${bk.id}', 'read')`}" class="p-3.5 rounded-2xl border transition flex items-center justify-between gap-3 ${locked ? 'bg-stone-100/80 border-stone-200 opacity-75 cursor-not-allowed' : 'bg-white border-stone-200/90 hover:border-amberGlow shadow-sm cursor-pointer active:scale-99'}">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-10 h-10 rounded-2xl flex items-center justify-center font-black text-xs shrink-0 ${locked ? 'bg-stone-200 text-slate-500' : isDone ? 'bg-mintSoft text-teal-800' : 'bg-amberSoft text-amber-800'}">
+                  ${locked ? '🔒' : isDone ? '✓' : `0${dayOrder}`}
+                </div>
+                <div class="min-w-0">
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-[10px] font-extrabold text-coralPop">${bk.number}</span>
+                    ${isDrip ? `<span class="text-[10px] text-slate-400">• اليوم ${dayOrder}</span>` : ''}
+                  </div>
+                  <h4 class="font-extrabold text-xs text-indigoDeep truncate mt-0.5">${bk.title}</h4>
+                  <p class="text-[11px] text-slate-500 truncate">${bk.subtitle}</p>
+                </div>
+              </div>
+              <span class="px-3 py-1.5 rounded-xl text-[11px] font-extrabold shrink-0 ${locked ? 'bg-stone-200 text-slate-500' : 'bg-indigoDeep text-amberGlow'}">
+                ${locked ? 'غداً' : 'ابدأ'}
+              </span>
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="bg-white/80 rounded-3xl p-4 border border-stone-200/80 shadow-sm space-y-3">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <h4 class="font-black text-sm text-indigoDeep">${series.title}</h4>
+                <p class="text-[11px] text-slate-500 mt-0.5">${series.desc}</p>
+              </div>
+              <span class="px-2.5 py-1 rounded-full text-[10px] font-extrabold shrink-0 ${isDrip ? 'bg-amberSoft text-amber-800' : 'bg-mintSoft text-teal-800'}">
+                ${isDrip ? '📅 تتابعي يومي' : '📚 مفتوح'}
+              </span>
+            </div>
+            <div class="space-y-2">${cards}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function simulateNextDay() {
+      state.unlockedDay++;
+      renderHome();
+      renderLibrary();
+      showToast(`☀️ صباح جديد! تم فتح اليوم ${state.unlockedDay} في سلسلة بَرَاشِيت`);
+    }
+
+    function joinWeeklyChallenge() {
+      const btn = document.getElementById('challenge-join-btn');
+      if (!state.joinedChallenge) {
+        state.joinedChallenge = true;
+        btn.textContent = 'مشارك ✓';
+        btn.classList.remove('bg-indigoDeep', 'text-amberGlow');
+        btn.classList.add('bg-mintTeal', 'text-white');
+        showToast('🎉 انضممت لتحدي الأسبوع مع 185 شاب وبنت!');
+      } else {
+        showToast('أنت بالفعل مشارك في تحدي الأسبوع 💪');
+      }
+    }
+
+    // ========================================================
+    // 4. المكتبة (Library)
+    // ========================================================
+    function renderLibrary() {
+      const pills = [{ id: 'all', name: 'الكل', icon: '✨' }, ...categories];
+      document.getElementById('lib-cat-pills').innerHTML = pills.map(c => {
+        const active = state.libFilter === c.id;
+        return `
+          <button onclick="setLibFilter('${c.id}')" class="px-3.5 py-1.5 rounded-xl text-xs font-extrabold shrink-0 transition ${active ? 'bg-indigoDeep text-amberGlow' : 'bg-white border border-stone-200 text-indigoDeep'}">
+            ${c.icon} ${c.name}
+          </button>
+        `;
+      }).join('');
+
+      const q = (document.getElementById('lib-search').value || '').trim().toLowerCase();
+      const filtered = Object.values(bookletsDB).filter(bk => {
+        const okCat = state.libFilter === 'all' || bk.categoryId === state.libFilter;
+        const okTxt = bk.title.toLowerCase().includes(q) || bk.subtitle.toLowerCase().includes(q) || bk.seriesTitle.toLowerCase().includes(q);
+        return okCat && okTxt;
+      });
+
+      const listEl = document.getElementById('lib-booklets-list');
+      if (filtered.length === 0) {
+        listEl.innerHTML = `<div class="text-center py-10 text-xs text-slate-400">لا توجد كتيّبات مطابقة لبحثك</div>`;
+        return;
+      }
+
+      listEl.innerHTML = filtered.map(bk => {
+        const ser = seriesList.find(s => s.id === bk.seriesId);
+        const idx = ser ? ser.bookletIds.indexOf(bk.id) + 1 : 1;
+        const locked = ser && ser.mode === 'drip' && idx > state.unlockedDay;
+
+        return `
+          <div onclick="${locked ? `showToast('🔒 متاح في اليوم ${idx} من السلسلة')` : `openBooklet('${bk.id}', 'read')`}" class="bg-white rounded-2xl p-4 border border-stone-200/80 shadow-sm flex items-center justify-between gap-3 cursor-pointer hover:border-amberGlow transition ${locked ? 'opacity-70' : ''}">
+            <div class="min-w-0">
+              <div class="flex items-center gap-1.5 text-[10px] font-extrabold text-coralPop">
+                <span>${bk.seriesTitle}</span>
+                <span>•</span>
+                <span>${bk.number}</span>
+              </div>
+              <h4 class="font-extrabold text-xs text-indigoDeep truncate mt-0.5">${bk.title}</h4>
+              <p class="text-[11px] text-slate-500 truncate">${bk.subtitle}</p>
+            </div>
+            <span class="px-3 py-1.5 rounded-xl text-[11px] font-extrabold shrink-0 ${locked ? 'bg-stone-200 text-slate-600' : 'bg-amberSoft text-amber-900'}">
+              ${locked ? '🔒 مقفول' : 'افتح'}
+            </span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function setLibFilter(catId) {
+      state.libFilter = catId;
+      renderLibrary();
+    }
+
+    // ========================================================
+    // 5. واجهة الكتيب (3 أوضاع: اقرأ / بودكاست / فيديو)
+    // ========================================================
+    function openBooklet(bkId, startMode = 'read') {
+      stopTTS();
+      activeBookletId = bkId;
+      activePageIdx = 0;
+
+      const bk = bookletsDB[bkId];
+      document.getElementById('bk-view-series').textContent = bk.seriesTitle;
+      document.getElementById('bk-view-title').textContent = bk.title;
+      document.getElementById('pod-title').textContent = bk.title;
+      document.getElementById('pod-sub').textContent = bk.subtitle;
+
+      // إعداد الفيديو إن وجد رابط يوتيوب
+      const vidWrap = document.getElementById('video-embed-wrapper');
+      if (bk.youtubeUrl) {
+        const embedUrl = convertToYoutubeEmbed(bk.youtubeUrl);
+        vidWrap.innerHTML = `<iframe class="w-full h-full" src="${embedUrl}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+      } else {
+        vidWrap.innerHTML = `
+          <span class="text-4xl">🎬</span>
+          <h3 class="font-black text-sm text-amberGlow">فيديو الحلقة قيد التجهيز</h3>
+          <p class="text-xs text-indigo-200 leading-relaxed">يمكنك إضافة رابط فيديو يوتيوب لهذا الكتيّب من تبويب «الإدارة ← إضافة محتوى» ليظهر هنا مباشرة.</p>
+          <button onclick="switchExperienceMode('read')" class="px-4 py-2 rounded-xl bg-amberGlow text-indigoDeep font-extrabold text-xs">العودة للقراءة التفاعلية 📖</button>
+        `;
+      }
+
+      // إعداد البودكاست إن وجد رابط MP3
+      const realAudio = document.getElementById('real-podcast-audio');
+      if (bk.podcastUrl) {
+        realAudio.src = bk.podcastUrl;
+        realAudio.classList.remove('hidden');
+        document.getElementById('pod-status-note').textContent = 'ملف البودكاست جاهز للاستماع بجودة عالية 🎧';
+      } else {
+        realAudio.src = '';
+        realAudio.classList.add('hidden');
+        document.getElementById('pod-status-note').textContent = 'اضغط تشغيل للاستماع للقراءة الصوتية للحلقة، أو أرفق ملف MP3 من الإدارة';
+      }
+
+      const view = document.getElementById('view-booklet');
+      view.classList.remove('hidden');
+      view.classList.add('flex');
+
+      switchExperienceMode(startMode);
+      renderBookletPage();
+    }
+
+    function closeBooklet() {
+      stopTTS();
+      podcastPlaying = false;
+      document.getElementById('pod-waves').classList.remove('wave-active');
+      document.getElementById('pod-play-btn').textContent = '▶';
+      const realAudio = document.getElementById('real-podcast-audio');
+      if (realAudio) realAudio.pause();
+
+      const view = document.getElementById('view-booklet');
+      view.classList.add('hidden');
+      view.classList.remove('flex');
+    }
+
+    function switchExperienceMode(mode) {
+      activeExpMode = mode;
+      ['read', 'podcast', 'video'].forEach(m => {
+        const btn = document.getElementById(`mode-btn-${m}`);
+        const box = document.getElementById(`exp-${m}-box`);
+        if (m === mode) {
+          btn.classList.add('bg-indigoDeep', 'text-white', 'shadow-sm');
+          btn.classList.remove('text-indigoDeep');
+          box.classList.remove('hidden');
+          box.classList.add('flex');
+        } else {
+          btn.classList.remove('bg-indigoDeep', 'text-white', 'shadow-sm');
+          btn.classList.add('text-indigoDeep');
+          box.classList.add('hidden');
+          box.classList.remove('flex');
+        }
+      });
+      if (mode !== 'read') stopTTS();
+    }
+
+    function convertToYoutubeEmbed(url) {
+      let videoId = '';
+      if (url.includes('youtu.be/')) {
+        videoId = url.split('youtu.be/')[1].split('?')[0];
+      } else if (url.includes('v=')) {
+        videoId = url.split('v=')[1].split('&')[0];
+      } else if (url.includes('embed/')) {
+        return url;
+      }
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : url;
+    }
+
+    // تشغيل البودكاست (ملف حقيقي أو قراءة صوتية ذكية)
+    function togglePodcastPlay() {
+      const bk = bookletsDB[activeBookletId];
+      const realAudio = document.getElementById('real-podcast-audio');
+      const playBtn = document.getElementById('pod-play-btn');
+      const waves = document.getElementById('pod-waves');
+
+      if (bk.podcastUrl) {
+        if (realAudio.paused) {
+          realAudio.play();
+          playBtn.textContent = '⏸';
+          waves.classList.add('wave-active');
+        } else {
+          realAudio.pause();
+          playBtn.textContent = '▶';
+          waves.classList.remove('wave-active');
+        }
+        return;
+      }
+
+      // بديل ذكي: قراءة محتوى الكتيب صوتياً في وضع البودكاست
+      if (podcastPlaying) {
+        window.speechSynthesis.cancel();
+        podcastPlaying = false;
+        playBtn.textContent = '▶';
+        waves.classList.remove('wave-active');
+      } else {
+        if (!('speechSynthesis' in window)) {
+          showToast('المتصفح لا يدعم الصوت الآلي');
+          return;
+        }
+        const fullText = bk.pages.map(p => `${p.title || ''} ${p.scripture || ''} ${p.body || ''} ${p.box1Body || ''} ${p.box2Body || ''}`).join(' . ');
+        window.speechSynthesis.cancel();
+        const utt = new SpeechSynthesisUtterance(fullText);
+        utt.lang = 'ar-EG';
+        utt.rate = podcastSpeeds[podcastSpeedIdx];
+        utt.onend = () => {
+          podcastPlaying = false;
+          playBtn.textContent = '▶';
+          waves.classList.remove('wave-active');
+        };
+        window.speechSynthesis.speak(utt);
+        podcastPlaying = true;
+        playBtn.textContent = '⏸';
+        waves.classList.add('wave-active');
+      }
+    }
+
+    function cyclePodcastSpeed() {
+      podcastSpeedIdx = (podcastSpeedIdx + 1) % podcastSpeeds.length;
+      const spd = podcastSpeeds[podcastSpeedIdx];
+      document.getElementById('pod-speed-btn').textContent = `${spd}x`;
+      const realAudio = document.getElementById('real-podcast-audio');
+      if (realAudio) realAudio.playbackRate = spd;
+    }
+
+    // ========================================================
+    // 6. عرض صفحات الكتيب الداخلية (Render Pages)
+    // ========================================================
+    function renderBookletPage() {
+      stopTTS();
+      const bk = bookletsDB[activeBookletId];
+      const total = bk.pages.length;
+      const page = bk.pages[activePageIdx];
+
+      document.getElementById('bk-page-counter').textContent = `${activePageIdx + 1} / ${total}`;
+      document.getElementById('bk-progress-bar').innerHTML = bk.pages.map((_, idx) => `
+        <div onclick="jumpPage(${idx})" class="h-1.5 flex-1 rounded-full cursor-pointer transition-all ${idx <= activePageIdx ? 'bg-amberGlow' : 'bg-stone-200'}"></div>
+      `).join('');
+
+      document.getElementById('bk-prev-btn').disabled = activePageIdx === 0;
+      document.getElementById('bk-next-btn').textContent = activePageIdx === total - 1 ? 'إنهاء الكتيّب ✓' : 'الصفحة التالية ←';
+
+      const stage = document.getElementById('bk-page-stage');
+      let html = '';
+
+      if (page.type === 'intro') {
+        html = `
+          <div class="animate-card space-y-4 pb-4">
+            <div class="bg-white rounded-3xl p-5 border border-stone-200/80 shadow-sm space-y-3">
+              <span class="inline-block px-3 py-1 rounded-full bg-amberSoft text-amber-800 text-[11px] font-extrabold">${page.badge}</span>
+              <h1 class="font-black text-xl text-indigoDeep leading-snug">${page.title}</h1>
+              <p class="text-xs font-bold text-coralPop">${page.subtitle}</p>
+
+              <div class="p-4 rounded-2xl bg-gradient-to-br from-indigoDeep to-indigoMid text-amber-50 space-y-2.5 shadow-inner">
+                <p class="font-serif r-scripture text-justify">${page.scripture}</p>
+                <div class="flex justify-end">
+                  <button onclick="openStoryModal('${page.scripture.replace(/'/g, "\\'")}', '${page.badge}')" class="px-2.5 py-1 rounded-xl bg-white/15 hover:bg-white/25 text-[10px] font-bold text-amberGlow">
+                    🎨 شارك كـ Story
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-5 border border-stone-200/80 shadow-sm space-y-2">
+              <h3 class="font-black r-heading text-indigoDeep">${page.secTitle}</h3>
+              <p class="r-text text-slate-700">${page.body}</p>
+            </div>
+          </div>
+        `;
+      } else if (page.type === 'terms') {
+        const cards = page.items.map(it => `
+          <div class="bg-white rounded-2xl p-4 border border-stone-200/80 shadow-sm space-y-1.5">
+            <span class="inline-block px-2.5 py-1 rounded-lg bg-amberSoft/80 text-indigoDeep font-extrabold text-xs">${it.w}</span>
+            <p class="r-text text-slate-700">${it.d}</p>
+          </div>
+        `).join('');
+
+        html = `
+          <div class="animate-card space-y-3 pb-4">
+            <div class="bg-indigoDeep text-white rounded-2xl p-4">
+              <h3 class="font-extrabold r-heading text-amberGlow">${page.heading}</h3>
+            </div>
+            ${cards}
+          </div>
+        `;
+      } else if (page.type === 'life') {
+        html = `
+          <div class="animate-card space-y-4 pb-4">
+            <h3 class="font-black r-heading text-indigoDeep">${page.heading}</h3>
+
+            <div class="bg-white rounded-3xl p-5 border-r-4 border-mintTeal shadow-sm space-y-3">
+              <h4 class="font-extrabold r-heading text-teal-800">${page.box1Title}</h4>
+              <p class="r-text text-slate-700">${page.box1Body}</p>
+              <div class="p-3 rounded-2xl bg-mintSoft/70 flex items-center justify-between gap-2">
+                <span class="text-xs font-bold text-teal-950">${page.quote1}</span>
+                <button onclick="openStoryModal('${page.quote1.replace(/'/g, "\\'")}', '${bk.seriesTitle}')" class="px-2.5 py-1.5 rounded-xl bg-white text-teal-800 text-[10px] font-extrabold shrink-0 shadow-sm">🎨 بطاقة</button>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-3xl p-5 border-r-4 border-coralPop shadow-sm space-y-3">
+              <h4 class="font-extrabold r-heading text-coralPop">${page.box2Title}</h4>
+              <p class="r-text text-slate-700">${page.box2Body}</p>
+              <div class="p-3 rounded-2xl bg-coralSoft/70 flex items-center justify-between gap-2">
+                <span class="text-xs font-bold text-orange-950">${page.quote2}</span>
+                <button onclick="openStoryModal('${page.quote2.replace(/'/g, "\\'")}', '${bk.seriesTitle}')" class="px-2.5 py-1.5 rounded-xl bg-white text-coralPop text-[10px] font-extrabold shrink-0 shadow-sm">🎨 بطاقة</button>
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (page.type === 'fathers') {
+        const qList = page.quotes.map(q => `
+          <div class="bg-white rounded-3xl p-5 border border-amber-200/80 shadow-sm space-y-3">
+            <p class="font-serif r-scripture text-indigoDeep">${q.t}</p>
+            <div class="flex items-center justify-between pt-2.5 border-t border-stone-100">
+              <span class="font-extrabold text-xs text-amber-800">${q.a}</span>
+              <button onclick="openStoryModal('${q.t.replace(/'/g, "\\'")}', '${q.a}')" class="px-3 py-1.5 rounded-xl bg-amberSoft text-amber-900 text-[11px] font-extrabold">🎨 Story</button>
+            </div>
+          </div>
+        `).join('');
+
+        html = `
+          <div class="animate-card space-y-4 pb-4">
+            <h3 class="font-black r-heading text-indigoDeep">${page.heading}</h3>
+            ${qList}
+          </div>
+        `;
+      } else if (page.type === 'action') {
+        const steps = page.steps.map((st, idx) => {
+          const k = `${activeBookletId}-${idx}`;
+          const done = !!state.checkedSteps[k];
+          return `
+            <div onclick="toggleStep('${k}')" class="p-3.5 rounded-2xl border flex items-start gap-2.5 cursor-pointer transition ${done ? 'bg-mintSoft/70 border-mintTeal' : 'bg-canvas border-stone-200'}">
+              <div class="w-5 h-5 rounded-md flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 ${done ? 'bg-mintTeal text-white' : 'bg-white border border-stone-300'}">
+                ${done ? '✓' : idx + 1}
+              </div>
+              <p class="r-text ${done ? 'line-through text-slate-400' : 'text-indigoDeep font-semibold'}">${st}</p>
+            </div>
+          `;
+        }).join('');
+
+        html = `
+          <div class="animate-card space-y-4 pb-4">
+            <h3 class="font-black r-heading text-indigoDeep">${page.heading}</h3>
+            <div class="bg-white rounded-3xl p-4 border border-stone-200 shadow-sm space-y-2.5">
+              <span class="text-xs font-extrabold text-teal-800">✅ خطوات عملية ليومك (اضغط للإنجاز):</span>
+              <div class="space-y-2">${steps}</div>
+            </div>
+
+            <div class="bg-gradient-to-br from-indigoDeep to-indigoMid text-white rounded-3xl p-5 shadow-md space-y-2">
+              <span class="text-xs font-extrabold text-amberGlow">🙏 صلاة من القلب</span>
+              <p class="font-serif r-scripture text-amber-50">${page.prayer}</p>
+            </div>
+          </div>
+        `;
+      } else if (page.type === 'glossary') {
+        const tList = page.terms.map(t => `
+          <div class="p-3 rounded-2xl bg-white border border-stone-200/80 space-y-1">
+            <div class="font-extrabold text-xs text-teal-800">${t.w}</div>
+            <p class="text-xs text-slate-600 leading-relaxed">${t.d}</p>
+          </div>
+        `).join('');
+
+        const tbl = (page.table || []).map(r => `
+          <div class="p-3 rounded-2xl bg-white border border-stone-200/80 space-y-1.5 text-[11px]">
+            <div class="font-extrabold text-indigoDeep">📌 ${r.axis}</div>
+            <div class="grid grid-cols-2 gap-2">
+              <div class="p-2 rounded-xl bg-rose-50 text-rose-900"><b>زمان:</b> ${r.old}</div>
+              <div class="p-2 rounded-xl bg-mintSoft text-teal-950"><b>بَرَاشِيت:</b> ${r.now}</div>
+            </div>
+          </div>
+        `).join('');
+
+        html = `
+          <div class="animate-card space-y-3 pb-4">
+            <h3 class="font-black r-heading text-indigoDeep">${page.heading}</h3>
+            ${tList}
+            ${tbl}
+            <p class="text-[11px] text-slate-500 bg-white p-3 rounded-2xl border border-stone-200">${page.refs}</p>
+          </div>
+        `;
+      } else if (page.type === 'assessment') {
+        html = `
+          <div class="animate-card space-y-4 pb-4">
+            <div>
+              <h3 class="font-black r-heading text-indigoDeep">🧭 بوصلة النمو اليومي</h3>
+              <p class="text-xs text-slate-500 mt-0.5">قيّم تفاعلك النهاردة (1 إلى 5) لتحديث مؤشرات حسابك:</p>
+            </div>
+
+            <form onsubmit="submitGrowthCheckin(event)" class="bg-white rounded-3xl p-5 border border-stone-200 shadow-sm space-y-4">
+              <div>
+                <div class="flex justify-between text-xs font-extrabold text-indigoDeep mb-1">
+                  <span>🕊️ البعد الروحي (السلام والصلة بالله)</span>
+                  <span id="val-sp" class="text-amber-600">4 / 5</span>
+                </div>
+                <input type="range" min="1" max="5" value="4" oninput="document.getElementById('val-sp').textContent = this.value + ' / 5'" id="rng-sp" class="w-full" />
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-extrabold text-indigoDeep mb-1">
+                  <span>🧠 البعد الفكري (وضوح الرؤية وتجديد الذهن)</span>
+                  <span id="val-in" class="text-indigoMid">4 / 5</span>
+                </div>
+                <input type="range" min="1" max="5" value="4" oninput="document.getElementById('val-in').textContent = this.value + ' / 5'" id="rng-in" class="w-full" />
+              </div>
+
+              <div>
+                <div class="flex justify-between text-xs font-extrabold text-indigoDeep mb-1">
+                  <span>💚 البعد النفسي (الهدوء وإدارة الضغوط)</span>
+                  <span id="val-ps" class="text-mintTeal">4 / 5</span>
+                </div>
+                <input type="range" min="1" max="5" value="4" oninput="document.getElementById('val-ps').textContent = this.value + ' / 5'" id="rng-ps" class="w-full" />
+              </div>
+
+              <div>
+                <label class="block text-xs font-extrabold text-indigoDeep mb-1">إيه أكتر شعور مسيطر عليك النهاردة؟</label>
+                <select id="sel-mood" class="w-full bg-canvas border border-stone-200 rounded-xl px-3 py-2 text-xs font-bold">
+                  <option value="حاسس بسلام وطمأنينة 🕊️">حاسس بسلام وطمأنينة 🕊️</option>
+                  <option value="محتاج هدوء وسط كركبة الأفكار 🌊">محتاج هدوء وسط كركبة الأفكار 🌊</option>
+                  <option value="قلقان من بكرة والمستقبل ⏳">قلقان من بكرة والمستقبل ⏳</option>
+                  <option value="متحمس أبدأ خطوة جديدة ☀️">متحمس أبدأ خطوة جديدة ☀️</option>
+                </select>
+              </div>
+
+              <textarea id="txt-growth-note" rows="2" placeholder="اكتب خطوتك العملية أو خاطرتك النهاردة..." class="w-full bg-canvas border border-stone-200 rounded-xl p-2.5 text-xs"></textarea>
+
+              <button type="submit" class="w-full py-3 rounded-2xl bg-gradient-to-l from-amberGlow to-coralPop text-indigoDeep font-black text-xs shadow-md">
+                ✨ حفظ وتحديث بوصلة نموي
+              </button>
+            </form>
+          </div>
+        `;
+      } else {
+        html = `
+          <div class="animate-card bg-white rounded-3xl p-5 border border-stone-200 shadow-sm space-y-3">
+            <h3 class="font-extrabold r-heading text-indigoDeep">${page.title || bk.title}</h3>
+            <p class="r-text text-slate-700 whitespace-pre-line">${page.body || ''}</p>
+          </div>
+        `;
+      }
+
+      stage.innerHTML = html;
+      stage.scrollTop = 0;
+    }
+
+    function jumpPage(idx) {
+      activePageIdx = idx;
+      renderBookletPage();
+    }
+
+    function nextPage() {
+      const bk = bookletsDB[activeBookletId];
+      if (activePageIdx < bk.pages.length - 1) {
+        activePageIdx++;
+        renderBookletPage();
+      } else {
+        if (!state.completedBooklets.includes(activeBookletId)) {
+          state.completedBooklets.push(activeBookletId);
+        }
+        renderHome();
+        renderProfile();
+        closeBooklet();
+        showToast('🎉 أتممت الكتيّب بنجاح!');
+      }
+    }
+
+    function prevPage() {
+      if (activePageIdx > 0) {
+        activePageIdx--;
+        renderBookletPage();
+      }
+    }
+
+    function toggleStep(k) {
+      state.checkedSteps[k] = !state.checkedSteps[k];
+      renderBookletPage();
+      if (state.checkedSteps[k]) showToast('🌿 عاش! تم تسجيل إنجاز الخطوة');
+    }
+
+    // أدوات القراءة (تكبير الخط + TTS + موسيقى خلفية)
+    function adjustFontScale(delta) {
+      fontScale = Math.min(1.4, Math.max(0.85, Number((fontScale + delta).toFixed(2))));
+      document.documentElement.style.setProperty('--reader-scale', fontScale);
+      showToast(`حجم الخط: ${Math.round(fontScale * 100)}%`);
+    }
+
+    function toggleArabicTTS() {
+      const btn = document.getElementById('tts-read-btn');
+      const txt = document.getElementById('tts-txt');
+      if (!('speechSynthesis' in window)) return;
+
+      if (isSpeaking) {
+        stopTTS();
+        return;
+      }
+
+      const content = document.getElementById('bk-page-stage').innerText.replace(/🎨.*|A-|A\+/g, '').trim();
+      window.speechSynthesis.cancel();
+      const utt = new SpeechSynthesisUtterance(content);
+      utt.lang = 'ar-EG';
+      utt.rate = 0.96;
+      utt.onstart = () => {
+        isSpeaking = true;
+        btn.classList.replace('bg-mintSoft', 'bg-coralPop');
+        btn.classList.replace('text-teal-900', 'text-white');
+        txt.textContent = 'إيقاف';
+      };
+      utt.onend = () => stopTTS();
+      window.speechSynthesis.speak(utt);
+    }
+
+    function stopTTS() {
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      isSpeaking = false;
+      const btn = document.getElementById('tts-read-btn');
+      const txt = document.getElementById('tts-txt');
+      if (btn && txt) {
+        btn.classList.remove('bg-coralPop', 'text-white');
+        btn.classList.add('bg-mintSoft', 'text-teal-900');
+        txt.textContent = 'استمع';
+      }
+    }
+
+    function toggleAmbientMusic() {
+      const btn = document.getElementById('music-toggle-btn');
+      if (isMusicPlaying) {
+        isMusicPlaying = false;
+        btn.textContent = '🔇';
+        btn.classList.remove('bg-amberSoft', 'border-amberGlow');
+        try {
+          if (musicGain && audioCtx) {
+            musicGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.3);
+            setTimeout(() => { musicOscs.forEach(o => { try { o.stop(); } catch(e){} }); musicOscs = []; }, 320);
+          }
+        } catch(e) {}
+        showToast('🔇 تم إيقاف الموسيقى الهادئة');
+      } else {
+        isMusicPlaying = true;
+        btn.textContent = '🎵';
+        btn.classList.add('bg-amberSoft', 'border-amberGlow');
+        try {
+          if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          if (audioCtx.state === 'suspended') audioCtx.resume();
+          musicGain = audioCtx.createGain();
+          musicGain.gain.setValueAtTime(0.001, audioCtx.currentTime);
+          musicGain.gain.exponentialRampToValueAtTime(0.022, audioCtx.currentTime + 0.8);
+          musicGain.connect(audioCtx.destination);
+          musicOscs = [174.61, 220.00, 261.63, 329.63].map(f => {
+            const osc = audioCtx.createOscillator();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(f, audioCtx.currentTime);
+            osc.connect(musicGain);
+            osc.start();
+            return osc;
+          });
+        } catch(e) {}
+        showToast('🎵 موسيقى هادئة مصاحبة للقراءة');
+      }
+    }
+
+    // ========================================================
+    // 7. البروفايل وبوصلة النمو ورسائل المرشد الخاصة
+    // ========================================================
+    function submitGrowthCheckin(e) {
+      e.preventDefault();
+      const sp = Number(document.getElementById('rng-sp').value);
+      const intel = Number(document.getElementById('rng-in').value);
+      const ps = Number(document.getElementById('rng-ps').value);
+      const mood = document.getElementById('sel-mood').value;
+      const note = document.getElementById('txt-growth-note').value.trim();
+      const bk = bookletsDB[activeBookletId];
+
+      state.growth.spiritual = Math.min(100, state.growth.spiritual + sp);
+      state.growth.intellectual = Math.min(100, state.growth.intellectual + intel);
+      state.growth.psychological = Math.min(100, state.growth.psychological + ps);
+      if (!state.completedBooklets.includes(activeBookletId)) state.completedBooklets.push(activeBookletId);
+
+      state.growthLogs.unshift({
+        date: 'الآن',
+        booklet: bk.title,
+        mood,
+        note: note || 'تقييم يومي مكتمل'
+      });
+
+      const nudgeMsg = (mood.includes('قلقان') || mood.includes('كركبة'))
+        ? 'رسالة دعم لك: افتكر إن روح الله بيرف بحنية فوق كركبتك.. خطوة واحدة بنور ربنا النهاردة تكفي 🕊️'
+        : `عاش يا ${state.profile.name}! تفاعلك مع «${bk.title}» يثبت إنك ماشي في طريق تجديد الذهن بثبات ☀️`;
+
+      state.nudges.unshift({ time: 'الآن', tag: 'تنبيه داعم ذكي 💌', text: nudgeMsg });
+      document.getElementById('home-daily-nudge').textContent = `«${nudgeMsg}»`;
+      document.getElementById('nudge-dot').classList.remove('hidden');
+
+      renderHome();
+      renderProfile();
+      renderAdmin();
+      closeBooklet();
+      switchTab('profile');
+      showToast('🧭 تم تحديث بوصلة نموك في حسابك!');
+    }
+
+    function renderProfile() {
+      document.getElementById('prof-avatar').textContent = state.profile.name.trim().charAt(0) || 'ن';
+      document.getElementById('prof-name').textContent = state.profile.name;
+      document.getElementById('prof-bio').textContent = state.profile.bio;
+      document.getElementById('prof-streak-val').textContent = state.streak;
+      document.getElementById('prof-done-val').textContent = state.completedBooklets.length;
+
+      document.getElementById('g-sp-txt').textContent = `${state.growth.spiritual}%`;
+      document.getElementById('g-sp-bar').style.width = `${state.growth.spiritual}%`;
+      document.getElementById('g-in-txt').textContent = `${state.growth.intellectual}%`;
+      document.getElementById('g-in-bar').style.width = `${state.growth.intellectual}%`;
+      document.getElementById('g-ps-txt').textContent = `${state.growth.psychological}%`;
+      document.getElementById('g-ps-bar').style.width = `${state.growth.psychological}%`;
+
+      // ردود المرشد الخاصة
+      document.getElementById('user-private-replies').innerHTML = state.privateMessages.map(m => `
+        <div class="p-2.5 rounded-xl bg-white/10 text-[11px] space-y-1">
+          <p class="text-amber-100"><b>سؤالك:</b> ${m.question}</p>
+          ${m.reply ? `<p class="text-mintSoft"><b>رد المرشد:</b> ${m.reply}</p>` : `<p class="text-indigo-200 italic">في انتظار رد المرشد...</p>`}
+        </div>
+      `).join('');
+
+      // كبسولات الزمن
+      document.getElementById('capsules-list').innerHTML = state.capsules.map(c => `
+        <div class="p-2.5 rounded-xl bg-white border border-amber-200/70 flex justify-between items-center text-[11px]">
+          <span class="font-bold text-indigoDeep truncate">🔒 ${c.text}</span>
+          <span class="text-[10px] text-amber-800 shrink-0 mr-2">${c.date}</span>
+        </div>
+      `).join('');
+
+      // الاقتباسات المحفوظة
+      document.getElementById('saved-quotes-box').innerHTML = state.savedQuotes.map(q => `
+        <div class="p-3.5 rounded-2xl bg-indigoDeep text-amber-50 space-y-1">
+          <p class="font-serif text-xs leading-relaxed">${q.text}</p>
+          <p class="text-[10px] text-amberGlow font-bold">— ${q.author}</p>
+        </div>
+      `).join('');
+    }
+
+    function toggleEditProfile() {
+      const box = document.getElementById('prof-edit-box');
+      box.classList.toggle('hidden');
+      document.getElementById('inp-prof-name').value = state.profile.name;
+      document.getElementById('inp-prof-bio').value = state.profile.bio;
+    }
+
+    function saveProfile() {
+      const n = document.getElementById('inp-prof-name').value.trim();
+      const b = document.getElementById('inp-prof-bio').value.trim();
+      if (n) state.profile.name = n;
+      if (b) state.profile.bio = b;
+      toggleEditProfile();
+      renderHome();
+      renderProfile();
+      showToast('✅ تم تحديث حسابك');
+    }
+
+    function sendPrivateGuidance(e) {
+      e.preventDefault();
+      const inp = document.getElementById('private-msg-input');
+      state.privateMessages.unshift({
+        id: 'pm-' + Date.now(),
+        sender: state.profile.name,
+        date: 'الآن',
+        question: inp.value.trim(),
+        reply: ''
+      });
+      inp.value = '';
+      renderProfile();
+      renderAdmin();
+      showToast('🔒 تم إرسال رسالتك بسرية تامة للمرشد');
+    }
+
+    function saveCapsule() {
+      const inp = document.getElementById('capsule-inp');
+      if (!inp.value.trim()) return;
+      state.capsules.unshift({ date: 'تُفتح بعد 30 يوم', text: inp.value.trim() });
+      inp.value = '';
+      renderProfile();
+      showToast('⏳ تم حفظ رسالتك في كبسولة الزمن!');
+    }
+
+    // ========================================================
+    // 8. أقلام ميتانويا (Community)
+    // ========================================================
+    function toggleWriteModal() {
+      document.getElementById('write-article-form').classList.toggle('hidden');
+    }
+
+    function submitArticle(e) {
+      e.preventDefault();
+      state.pendingPosts.unshift({
+        id: 'pend-' + Date.now(),
+        author: document.getElementById('w-author').value.trim(),
+        title: document.getElementById('w-title').value.trim(),
+        verse: document.getElementById('w-verse').value.trim(),
+        body: document.getElementById('w-body').value.trim()
+      });
+      e.target.reset();
+      toggleWriteModal();
+      renderAdmin();
+      showToast('📩 تم إرسال مقالك للمراجعة والنشر');
+    }
+
+    function renderCommunity() {
+      document.getElementById('community-posts-list').innerHTML = state.publishedPosts.map(p => `
+        <article class="bg-white rounded-3xl p-5 border border-stone-200/80 shadow-sm space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-extrabold text-teal-800">✍️ ${p.author}</span>
+            <span class="px-2 py-0.5 rounded-full bg-mintSoft text-teal-900 text-[10px] font-bold">مقال حر</span>
+          </div>
+          <h3 class="font-black text-sm text-indigoDeep">${p.title}</h3>
+          ${p.verse ? `<p class="font-serif text-xs text-amber-900 bg-amberSoft/70 px-3 py-1.5 rounded-xl">${p.verse}</p>` : ''}
+          <p class="text-xs text-slate-700 leading-[1.9]">${p.body}</p>
+        </article>
+      `).join('');
+    }
+
+    // ========================================================
+    // 9. لوحة الإدارة والربط السحابي (Admin Dashboard)
+    // ========================================================
+    function switchAdminSub(sub) {
+      ['moderation', 'content', 'firebase'].forEach(s => {
+        const btn = document.getElementById(`adm-sub-btn-${s}`);
+        const box = document.getElementById(`adm-sub-${s}`);
+        if (s === sub) {
+          btn.classList.add('bg-indigoDeep', 'text-white');
+          btn.classList.remove('text-indigoDeep');
+          box.classList.remove('hidden');
+        } else {
+          btn.classList.remove('bg-indigoDeep', 'text-white');
+          btn.classList.add('text-indigoDeep');
+          box.classList.add('hidden');
+        }
+      });
+    }
+
+    function renderAdmin() {
+      // رسائل اسأل الكوتش
+      document.getElementById('adm-priv-count').textContent = state.privateMessages.length;
+      document.getElementById('adm-priv-list').innerHTML = state.privateMessages.map((m, idx) => `
+        <div class="p-3 rounded-2xl bg-canvas border border-stone-200 space-y-2 text-xs">
+          <div class="flex justify-between font-extrabold text-indigoDeep">
+            <span>👤 ${m.sender}</span>
+            <span class="text-[10px] text-slate-400">${m.date}</span>
+          </div>
+          <p class="text-slate-700">${m.question}</p>
+          ${m.reply
+            ? `<div class="p-2 rounded-xl bg-mintSoft/70 text-teal-950 text-[11px]"><b>ردك:</b> ${m.reply}</div>`
+            : `<div class="flex gap-1.5">
+                <input type="text" id="reply-inp-${idx}" placeholder="اكتب ردك الإرشادي..." class="flex-1 bg-white border border-stone-200 rounded-xl px-2.5 py-1.5 text-[11px]" />
+                <button onclick="replyPrivateMsg(${idx})" class="px-3 py-1.5 rounded-xl bg-indigoDeep text-amberGlow text-[11px] font-bold">رد</button>
+              </div>`
+          }
+        </div>
+      `).join('');
+
+      // المقالات المعلقة
+      document.getElementById('adm-pend-count').textContent = state.pendingPosts.length;
+      const pendBox = document.getElementById('adm-pend-list');
+      if (state.pendingPosts.length === 0) {
+        pendBox.innerHTML = `<p class="text-[11px] text-slate-400 text-center py-2">لا توجد مقالات معلقة</p>`;
+      } else {
+        pendBox.innerHTML = state.pendingPosts.map((p, idx) => `
+          <div class="p-3 rounded-2xl bg-canvas border border-amber-200 space-y-1.5 text-xs">
+            <div class="flex justify-between font-extrabold text-indigoDeep">
+              <span>${p.title}</span>
+              <span class="text-[10px] text-slate-500">${p.author}</span>
+            </div>
+            <p class="text-[11px] text-slate-600">${p.body}</p>
+            <div class="flex gap-2 pt-1">
+              <button onclick="approvePost(${idx})" class="flex-1 py-1.5 rounded-xl bg-mintTeal text-white text-[11px] font-bold">✓ اعتماد ونشر</button>
+              <button onclick="rejectPost(${idx})" class="px-3 py-1.5 rounded-xl bg-rose-100 text-rose-800 text-[11px] font-bold">رفض</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // تقييمات القراء
+      document.getElementById('adm-growth-logs').innerHTML = state.growthLogs.map(l => `
+        <div class="p-2.5 rounded-xl bg-canvas border border-stone-200 text-[11px]">
+          <div class="flex justify-between font-bold text-indigoDeep">
+            <span>${l.booklet}</span>
+            <span class="text-teal-700">${l.mood}</span>
+          </div>
+          <p class="text-slate-600 mt-0.5">✍️ ${l.note}</p>
+        </div>
+      `).join('');
+
+      // قائمة الكتيبات لربط الميديا
+      document.getElementById('media-booklet-select').innerHTML = Object.values(bookletsDB).map(bk => `
+        <option value="${bk.id}">${bk.seriesTitle} — ${bk.title}</option>
+      `).join('');
+    }
+
+    function replyPrivateMsg(idx) {
+      const inp = document.getElementById(`reply-inp-${idx}`);
+      if (!inp || !inp.value.trim()) return;
+      state.privateMessages[idx].reply = inp.value.trim();
+      renderAdmin();
+      renderProfile();
+      showToast('✅ تم إرسال ردك الخاص للمستخدم');
+    }
+
+    function approvePost(idx) {
+      const post = state.pendingPosts.splice(idx, 1)[0];
+      state.publishedPosts.unshift(post);
+      renderAdmin();
+      renderCommunity();
+      showToast('✅ تم اعتماد ونشر المقال في «أقلام ميتانويا»');
+    }
+
+    function rejectPost(idx) {
+      state.pendingPosts.splice(idx, 1);
+      renderAdmin();
+      showToast('تم استبعاد المقال');
+    }
+
+    function updateBrandIdentity() {
+      const name = document.getElementById('cfg-app-name').value.trim();
+      const slogan = document.getElementById('cfg-app-slogan').value.trim();
+      if (name) document.getElementById('header-app-name').textContent = name;
+      if (slogan) document.getElementById('header-app-slogan').textContent = slogan;
+      showToast('🎨 تم تحديث اسم التطبيق والشعار!');
+    }
+
+    function attachMediaToBooklet() {
+      const bkId = document.getElementById('media-booklet-select').value;
+      const yt = document.getElementById('media-youtube-url').value.trim();
+      const pod = document.getElementById('media-podcast-url').value.trim();
+      if (bookletsDB[bkId]) {
+        if (yt) bookletsDB[bkId].youtubeUrl = yt;
+        if (pod) bookletsDB[bkId].podcastUrl = pod;
+        showToast('🎬🎧 تم ربط الفيديو/البودكاست بالكتيّب بنجاح!');
+      }
+    }
+
+    function publishNewBooklet(e) {
+      e.preventDefault();
+      const serId = document.getElementById('new-bk-series').value;
+      const title = document.getElementById('new-bk-title').value.trim();
+      const sub = document.getElementById('new-bk-sub').value.trim();
+      const body = document.getElementById('new-bk-body').value.trim();
+
+      const ser = seriesList.find(s => s.id === serId);
+      const rawPages = body.split('---').map(p => p.trim()).filter(Boolean);
+      const pages = rawPages.map((txt, idx) => ({
+        type: 'custom',
+        title: `${title} (${idx + 1})`,
+        body: txt
+      }));
+      pages.push({ type: 'assessment' });
+
+      const newId = 'bk-' + Date.now();
+      bookletsDB[newId] = {
+        id: newId,
+        seriesId: serId,
+        categoryId: ser.categoryId,
+        seriesTitle: ser.title,
+        number: `كتيّب 0${ser.bookletIds.length + 1}`,
+        title,
+        subtitle: sub,
+        youtubeUrl: '',
+        podcastUrl: '',
+        pages
+      };
+      ser.bookletIds.push(newId);
+      state.nudges.unshift({
+        time: 'الآن',
+        tag: 'إصدار جديد 🔔',
+        text: `صدر الآن كتيّب جديد بعنوان «${title}» في سلسلة ${ser.title}!`
+      });
+
+      e.target.reset();
+      renderHome();
+      renderLibrary();
+      renderAdmin();
+      showToast('🔔 تم نشر الكتيّب وإرسال إشعار للمتابعين!');
+    }
+
+    function saveFirebaseConfig() {
+      const raw = document.getElementById('firebase-config-json').value.trim();
+      if (!raw) {
+        showToast('الرجاء لصق كود إعدادات Firebase أولاً');
+        return;
+      }
+      try {
+        JSON.parse(raw);
+        localStorage.setItem('metanoia_firebase_cfg', raw);
+        const badge = document.getElementById('cloud-status-badge');
+        badge.textContent = 'متصل بالسحابة ☁️';
+        badge.classList.replace('bg-amberSoft', 'bg-mintSoft');
+        badge.classList.replace('text-amber-800', 'text-teal-900');
+        showToast('🚀 تم حفظ إعدادات Firebase وتفعيل السحابة!');
+      } catch (err) {
+        showToast('⚠️ تأكد من صحة صيغة JSON');
+      }
+    }
+
+    // ========================================================
+    // 10. صانع بطاقات Story، المشاركة، والتنقل العام
+    // ========================================================
+    let currentStory = { text: '', author: '' };
+
+    function openStoryModal(text, author) {
+      currentStory = { text, author };
+      document.getElementById('st-text').textContent = text;
+      document.getElementById('st-author').textContent = author;
+      document.getElementById('story-modal').classList.remove('hidden');
+    }
+
+    function closeStoryModal() {
+      document.getElementById('story-modal').classList.add('hidden');
+    }
+
+    function setStoryTheme(theme) {
+      const card = document.getElementById('story-preview-card');
+      if (theme === 'indigo') {
+        card.className = 'rounded-2xl p-6 bg-gradient-to-br from-indigoDeep via-indigoMid to-purple-900 text-white shadow-inner space-y-4';
+      } else if (theme === 'coral') {
+        card.className = 'rounded-2xl p-6 bg-gradient-to-br from-amber-700 via-coralPop to-rose-800 text-white shadow-inner space-y-4';
+      } else {
+        card.className = 'rounded-2xl p-6 bg-gradient-to-br from-teal-800 via-mintTeal to-emerald-900 text-white shadow-inner space-y-4';
+      }
+    }
+
+    function saveStoryQuote() {
+      state.savedQuotes.unshift({ ...currentStory });
+      renderProfile();
+      closeStoryModal();
+      showToast('🔖 تم حفظ البطاقة في حسابك');
+    }
+
+    function copyStoryQuote() {
+      const txt = `${currentStory.text}\n— ${currentStory.author}\n\nمن تطبيق ميتانويا (رحلة تغيير الفكر والقلب) ✨`;
+      const ta = document.createElement('textarea');
+      ta.value = txt;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      closeStoryModal();
+      showToast('📋 تم نسخ البطاقة جاهزة للنشر كـ Story!');
+    }
+
+    function giftBookletToFriend() {
+      const bk = bookletsDB[activeBookletId];
+      const txt = `قرأت النهاردة كتيّب «${bk.title}» على تطبيق ميتانويا وتذكرتك.. جرب تقراه معايا 🎁✨`;
+      const ta = document.createElement('textarea');
+      ta.value = txt;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('🎁 تم نسخ رسالة إهداء الكتيّب لصديقك!');
+    }
+
+    function showStreakToast() {
+      showToast(`🔥 سلسلتك: ${state.streak} أيام متتالية! لديك درع حماية 🛡️ ليوم واحد أسبوعياً`);
+    }
+
+    function toggleNudges() {
+      const dr = document.getElementById('nudges-drawer');
+      dr.classList.toggle('hidden');
+      document.getElementById('nudge-dot').classList.add('hidden');
+      document.getElementById('nudges-list').innerHTML = state.nudges.map(n => `
+        <div class="p-3 rounded-2xl bg-canvas border border-stone-200 space-y-1">
+          <div class="flex justify-between text-[10px]">
+            <span class="font-extrabold text-coralPop">${n.tag}</span>
+            <span class="text-slate-400">${n.time}</span>
+          </div>
+          <p class="text-xs text-indigoDeep leading-relaxed">${n.text}</p>
+        </div>
+      `).join('');
+    }
+
+    function showPwaInstructions() {
+      showToast('📲 على iOS اضغط زر المشاركة (Share) ثم "إضافة إلى الشاشة الرئيسية"');
+    }
+
+    function dismissPwaBanner() {
+      document.getElementById('pwa-banner').classList.add('hidden');
+    }
+
+    function switchTab(tab) {
+      ['home', 'library', 'community', 'profile', 'admin'].forEach(t => {
+        const el = document.getElementById(`tab-${t}`);
+        const nav = document.getElementById(`nav-${t}`);
+        if (t === tab) {
+          el.classList.remove('hidden');
+          el.classList.add('flex');
+          nav.classList.add('text-indigoDeep', 'font-extrabold');
+          nav.classList.remove('text-slate-400', 'font-semibold');
+          nav.querySelector('span:first-child').classList.add('bg-amberSoft');
+        } else {
+          el.classList.add('hidden');
+          el.classList.remove('flex');
+          nav.classList.remove('text-indigoDeep', 'font-extrabold');
+          nav.classList.add('text-slate-400', 'font-semibold');
+          nav.querySelector('span:first-child').classList.remove('bg-amberSoft');
+        }
+      });
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      document.getElementById('toast-msg').textContent = msg;
+      t.classList.remove('opacity-0', '-translate-y-2');
+      t.classList.add('opacity-100', 'translate-y-0');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        t.classList.remove('opacity-100', 'translate-y-0');
+        t.classList.add('opacity-0', '-translate-y-2');
+      }, 2800);
+    }
+
+    window.onload = function () {
+      renderHome();
+      renderLibrary();
+      renderCommunity();
+      renderProfile();
+      renderAdmin();
+    };
+  </script>
+</body>
+</html>
